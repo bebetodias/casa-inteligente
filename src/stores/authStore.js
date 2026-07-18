@@ -166,14 +166,8 @@ export const useAuthStore = create((set, get) => ({
     const termo = codigoOuToken.trim();
     const ehToken = termo.startsWith('tk_');
     
-    let query = supabase.from('casas').select('*');
-    if (ehToken) {
-      query = query.eq('token_convite', termo);
-    } else {
-      query = query.eq('codigo_convite', termo.toUpperCase());
-    }
-
-    const { data, error } = await query.single();
+    // Usa a função RPC (bypassa RLS que bloqueava leitura de casas por não membros)
+    const { data, error } = await supabase.rpc('validar_codigo_convite', { termo });
 
     if (error || !data) {
       throw new Error('Convite inválido ou expirado.');
