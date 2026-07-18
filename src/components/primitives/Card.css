@@ -1,0 +1,17 @@
+.card {
+  background: var(--color-surface-raised);
+  border-radius: var(--radius-large);
+  padding: var(--space-500);
+  box-shadow: var(--shadow-overlay);
+  text-align: left;
+  width: 100%;
+}
+.card--interactive {
+  cursor: pointer;
+  transition: box-shadow var(--duration-medium) var(--easing-standard),
+    transform var(--duration-medium) var(--easing-standard);
+}
+.card--interactive:hover {
+  box-shadow: var(--shadow-elevation-200);
+  transform: translateY(-2px);
+}

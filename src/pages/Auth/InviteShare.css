@@ -1,0 +1,121 @@
+.invite-share__card {
+  background: var(--color-surface);
+  border-radius: var(--radius-large);
+  padding: var(--space-600);
+  width: 100%;
+  max-width: 480px;
+  box-shadow: var(--shadow-elevation-300);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-600);
+}
+
+.invite-share__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-300);
+}
+
+.invite-share__header h2 {
+  font-size: var(--font-size-600);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  margin: 0;
+}
+
+.invite-share__back {
+  background: none;
+  border: none;
+  color: var(--color-text-subtle);
+  cursor: pointer;
+  padding: var(--space-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  transition: background-color var(--duration-fast), color var(--duration-fast);
+}
+
+.invite-share__back:hover {
+  background: var(--color-bg-subtle);
+  color: var(--color-text);
+}
+
+.invite-share__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+}
+
+.invite-share__desc {
+  font-size: var(--font-size-300);
+  color: var(--color-text-subtle);
+  line-height: var(--line-height-300);
+  margin: 0;
+}
+
+.invite-share__desc strong {
+  color: var(--color-text);
+}
+
+.invite-share__link-box {
+  display: flex;
+  gap: var(--space-200);
+  background: var(--color-bg);
+  padding: var(--space-200);
+  border-radius: var(--radius-medium);
+  border: 1px solid var(--color-border);
+}
+
+.invite-share__link-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  font-family: monospace;
+  font-size: var(--font-size-200);
+  color: var(--color-text);
+  outline: none;
+  width: 100%;
+}
+
+.invite-share__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.invite-share__divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: var(--color-text-subtlest);
+  font-size: var(--font-size-200);
+  font-weight: var(--font-weight-bold);
+  margin: var(--space-200) 0;
+}
+
+.invite-share__divider::before,
+.invite-share__divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.invite-share__divider span {
+  padding: 0 var(--space-300);
+}
+
+.invite-share__code {
+  display: flex;
+  justify-content: center;
+}
+
+.invite-share__code code {
+  font-size: var(--font-size-600);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-brand);
+  letter-spacing: 2px;
+  background: var(--color-brand-subtle);
+  padding: var(--space-300) var(--space-600);
+  border-radius: var(--radius-medium);
+}

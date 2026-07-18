@@ -1,0 +1,122 @@
+/* === Stepper === */
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  margin-bottom: var(--space-400);
+}
+
+.stepper__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.stepper__bullet {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-circle);
+  background: var(--color-bg-sunken);
+  color: var(--color-text-subtlest);
+  font-size: var(--font-size-200);
+  font-weight: var(--font-weight-semibold);
+  transition: background-color var(--duration-medium) var(--easing-standard),
+    color var(--duration-medium) var(--easing-standard);
+}
+
+.stepper__item--active .stepper__bullet {
+  background: var(--color-brand);
+  color: var(--color-text-inverse);
+}
+
+.stepper__item--done .stepper__bullet {
+  background: var(--color-success);
+  color: var(--color-text-inverse);
+}
+
+.stepper__line {
+  display: inline-block;
+  width: 40px;
+  height: 2px;
+  background: var(--color-bg-sunken);
+  border-radius: var(--radius-small);
+}
+
+.stepper__item--done + .stepper__item .stepper__line,
+.stepper__item--done .stepper__line {
+  background: var(--color-success);
+}
+
+/* === Actions === */
+.register__actions {
+  margin-top: var(--space-200);
+}
+
+.register__actions--split {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-300);
+}
+
+/* === House Preview === */
+.register__house-preview {
+  display: flex;
+  align-items: center;
+  gap: var(--space-400);
+  padding: var(--space-400);
+  background: var(--color-brand-subtle);
+  border-radius: var(--radius-large);
+  border: 1px solid var(--color-brand);
+}
+
+.register__house-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface);
+  border-radius: var(--radius-medium);
+  color: var(--color-brand);
+  flex-shrink: 0;
+}
+.register__house-icon svg { width: 24px; height: 24px; }
+
+.register__house-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+}
+.register__house-text strong {
+  font-size: var(--font-size-300);
+  color: var(--color-text);
+}
+.register__house-text span {
+  font-size: var(--font-size-200);
+  color: var(--color-text-subtle);
+}
+
+/* === Info Box === */
+.register__info-box {
+  padding: var(--space-400);
+  background: var(--color-info-subtle);
+  border-radius: var(--radius-medium);
+  border-left: 3px solid var(--color-info);
+}
+
+.register__info-box strong {
+  display: block;
+  font-size: var(--font-size-300);
+  color: var(--color-text);
+  margin-bottom: var(--space-100);
+  font-weight: var(--font-weight-semibold);
+}
+
+.register__info-box p {
+  font-size: var(--font-size-200);
+  color: var(--color-text-subtle);
+  line-height: var(--line-height-200);
+}

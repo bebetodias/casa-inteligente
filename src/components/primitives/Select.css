@@ -1,0 +1,33 @@
+.select-wrapper {
+  position: relative;
+}
+
+.select {
+  width: 100%;
+  height: 40px;
+  padding: 0 var(--space-800) 0 var(--space-300);
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-medium);
+  color: var(--color-text);
+  appearance: none;
+  cursor: pointer;
+  transition: border-color var(--duration-fast) var(--easing-standard),
+    box-shadow var(--duration-fast) var(--easing-standard);
+}
+
+.select:hover { border-color: var(--color-border-bold); }
+.select:focus { outline: none; border-color: var(--color-brand); box-shadow: 0 0 0 1px var(--color-brand); }
+
+.field--error .select { border-color: var(--color-danger); }
+.field--error .select:focus { box-shadow: 0 0 0 1px var(--color-danger); }
+
+.select__chevron {
+  position: absolute;
+  right: var(--space-300);
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--color-text-subtlest);
+  display: flex;
+}

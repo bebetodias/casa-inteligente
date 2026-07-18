@@ -1,0 +1,31 @@
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-1000) var(--space-500);
+  gap: var(--space-300);
+}
+
+.empty__icon {
+  font-size: 56px;
+  line-height: 1;
+  margin-bottom: var(--space-200);
+}
+
+.empty__title {
+  font-size: var(--font-size-500);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.empty__description {
+  font-size: var(--font-size-300);
+  color: var(--color-text-subtle);
+  max-width: 360px;
+  line-height: var(--line-height-300);
+}
+
+.empty__action {
+  margin-top: var(--space-400);
+}

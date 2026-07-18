@@ -1,0 +1,116 @@
+:root {
+  /* === Color Palette === */
+  --color-bg: #ffffff;
+  --color-bg-subtle: #fdfdfd;
+  --color-bg-sunken: #ebecf0;
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-overlay: rgba(9, 30, 66, 0.54);
+
+  --color-text: #172b4d;
+  --color-text-subtle: #5e6c84;
+  --color-text-subtlest: #7a869a;
+  --color-text-inverse: #ffffff;
+  --color-text-link: #0052cc;
+
+  --color-border: #dfe1e6;
+  --color-border-bold: #c1c7d0;
+
+  /* Brand */
+  --color-brand: #ff8a00;
+  --color-brand-bold: #bf6a00;
+  --color-brand-subtle: #fff1e0;
+  --color-brand-inverse: #000000;
+
+  /* Status */
+  --color-success: #00875a;
+  --color-success-subtle: #abf5d1;
+  --color-warning: #ff8b00;
+  --color-warning-subtle: #fff0b3;
+  --color-danger: #de350b;
+  --color-danger-subtle: #ffbdad;
+  --color-info: #0065ff;
+  --color-info-subtle: #b3d4ff;
+
+  /* Shopping List */
+  --color-shopping-list-light: #eaf1fb;
+  --color-shopping-list-pure: #98bad5;
+  --color-shopping-list-medium: #2a69ab;
+  --color-shopping-list-bold: #304674;
+
+  /* Plants */
+  --color-plants-light: #d9efe7;
+  --color-plants-pure: #5c946e;
+  --color-plants-medium: #316441;
+  --color-plants-bold: #1c492b;
+
+  /* Maintenance */
+  --color-maintenance-light: #fff0b3;
+  --color-maintenance-pure: #ffcc00;
+  --color-maintenance-medium: #f0b000;
+  --color-maintenance-bold: #f0b000;
+  
+  /* === Typography === */
+  --font-family: 'Stack Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  --font-family-mono: 'SFMono-Regular', Consolas, monospace;
+
+  --font-size-100: 10px;
+  --font-size-200: 12px;
+  --font-size-300: 14px;
+  --font-size-400: 16px;
+  --font-size-500: 20px;
+  --font-size-600: 24px;
+  --font-size-700: 32px;
+
+  --font-weight-light: 200;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-100: 0.8;
+  --line-height-200: 1;
+  --line-height-300: 1.2;
+  --line-height-400: 1.4;
+  --line-height-500: 1.6;
+
+  /* === Spacing === */
+  --space-0: 0;
+  --space-050: 2px;
+  --space-100: 4px;
+  --space-150: 6px;
+  --space-200: 8px;
+  --space-250: 10px;
+  --space-300: 12px;
+  --space-400: 16px;
+  --space-500: 20px;
+  --space-600: 24px;
+  --space-800: 32px;
+  --space-1000: 40px;
+
+  /* === Radius === */
+  --radius-small: 3px;
+  --radius-medium: 6px;
+  --radius-large: 8px;
+  --radius-xlarge: 12px;
+  --radius-circle: 50%;
+
+  /* === Shadows === */
+  --shadow-elevation-100: 0 1px 1px rgba(9, 30, 66, 0.25);
+  --shadow-elevation-200: 0 3px 5px rgba(9, 30, 66, 0.2);
+  --shadow-elevation-300: 0 8px 16px;
+  --shadow-overlay: 0 0 0 1px rgba(9, 30, 66, 0.08),
+    0 2px 4px rgba(9, 30, 66, 0.16);
+
+  /* === Motion === */
+  --duration-fast: 100ms;
+  --duration-medium: 200ms;
+  --duration-slow: 300ms;
+  --easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* === Layout === */
+  --layout-sidenav-width: 240px;
+  --layout-header-height: 56px;
+  --layout-max-width: 1200px;
+}

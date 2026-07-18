@@ -1,0 +1,121 @@
+.profile {
+  padding: var(--space-600);
+  max-width: 600px;
+  margin: 0 auto;
+  animation: fadeIn var(--duration-medium) var(--easing-standard);
+}
+
+.profile__header {
+  margin-bottom: var(--space-600);
+  text-align: center;
+}
+
+.profile__title {
+  font-size: var(--font-size-700);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  margin-bottom: var(--space-200);
+}
+
+.profile__subtitle {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-400);
+}
+
+.profile__form {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-large);
+  padding: var(--space-600);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-500);
+  box-shadow: var(--shadow-elevation-100);
+}
+
+.profile__avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-300);
+  margin-bottom: var(--space-400);
+}
+
+.profile__avatar-btn {
+  background: none;
+  border: 1px solid var(--color-brand);
+  color: var(--color-brand);
+  padding: var(--space-200) var(--space-400);
+  border-radius: var(--radius-medium);
+  font-size: var(--font-size-300);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--easing-standard);
+}
+
+.profile__avatar-btn:hover {
+  background: var(--color-brand-subtle);
+  color: var(--color-brand-bold);
+}
+
+.profile__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.profile__field label {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+  font-size: var(--font-size-300);
+}
+
+.profile__field input {
+  padding: var(--space-300);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-medium);
+  font-family: inherit;
+  font-size: var(--font-size-400);
+  transition: border-color var(--duration-fast) var(--easing-standard);
+  background: var(--color-bg-subtle);
+  color: var(--color-text);
+}
+
+.profile__field input:focus {
+  outline: none;
+  border-color: var(--color-brand);
+  box-shadow: 0 0 0 2px var(--color-brand-subtle);
+}
+
+.profile__submit-btn {
+  background: var(--color-brand);
+  color: var(--color-text-inverse);
+  border: none;
+  padding: var(--space-300) var(--space-600);
+  border-radius: var(--radius-medium);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-400);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--easing-standard);
+  margin-top: var(--space-200);
+}
+
+.profile__submit-btn:hover:not(:disabled) {
+  background: var(--color-brand-bold);
+}
+
+.profile__submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

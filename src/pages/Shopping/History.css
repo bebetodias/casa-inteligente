@@ -1,0 +1,206 @@
+.history {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-600);
+  animation: shopping-fade-in var(--duration-slow) var(--easing-standard);
+}
+
+.history__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-400);
+  flex-wrap: wrap;
+}
+
+.history__title-area {
+  display: flex;
+  align-items: center;
+  gap: var(--space-400);
+}
+
+.history__title-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-info-subtle);
+  color: var(--color-info);
+  border-radius: var(--radius-large);
+  flex-shrink: 0;
+}
+
+.history__title {
+  font-size: var(--font-size-600);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  letter-spacing: -0.3px;
+}
+
+.history__subtitle {
+  font-size: var(--font-size-300);
+  color: var(--color-text-subtle);
+  margin-top: var(--space-050);
+}
+
+/* === Filtros === */
+.history__filters {
+  display: flex;
+  gap: var(--space-400);
+  flex-wrap: wrap;
+  padding: var(--space-400);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-large);
+}
+
+.history__search {
+  flex: 1;
+  min-width: 240px;
+}
+
+.history__filter-group {
+  display: flex;
+  gap: var(--space-300);
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+
+.history__filter-group > * { min-width: 160px; }
+
+.history__period-buttons {
+  display: inline-flex;
+  background: var(--color-bg-subtle);
+  border-radius: var(--radius-medium);
+  padding: var(--space-050);
+  gap: var(--space-050);
+}
+
+.history__period-btn {
+  padding: var(--space-100) var(--space-300);
+  border-radius: var(--radius-small);
+  font-size: var(--font-size-200);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-subtle);
+  transition: background-color var(--duration-fast) var(--easing-standard),
+    color var(--duration-fast) var(--easing-standard);
+}
+.history__period-btn:hover { color: var(--color-text); }
+.history__period-btn--active {
+  background: var(--color-surface);
+  color: var(--color-brand);
+  box-shadow: var(--shadow-elevation-100);
+}
+
+/* === Loading === */
+.history__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-300);
+  padding: var(--space-1000);
+  color: var(--color-text-subtlest);
+}
+
+/* === Lista === */
+.history__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-600);
+}
+
+.history__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.history__group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-300);
+  padding-bottom: var(--space-200);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.history__group-title {
+  font-size: var(--font-size-300);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  text-transform: capitalize;
+}
+
+.history__items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+}
+
+.history__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-400);
+  padding: var(--space-300) var(--space-400);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-medium);
+  transition: border-color var(--duration-fast) var(--easing-standard);
+}
+.history__item:hover { border-color: var(--color-border-bold); }
+
+.history__item-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.history__item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.history__item-name {
+  font-size: var(--font-size-400);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.history__item-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  font-size: var(--font-size-200);
+  color: var(--color-text-subtle);
+  margin-top: var(--space-050);
+  flex-wrap: wrap;
+}
+
+.history__item-dot { color: var(--color-text-subtlest); }
+
+.history__item-local {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-100);
+}
+
+.history__item-price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-050);
+  flex-shrink: 0;
+}
+
+.history__item-price strong {
+  font-size: var(--font-size-400);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.history__item-price span {
+  font-size: var(--font-size-100);
+  color: var(--color-text-subtlest);
+  font-variant-numeric: tabular-nums;
+}

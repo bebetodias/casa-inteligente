@@ -1,0 +1,94 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--color-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: var(--space-400);
+  animation: modal-overlay-in var(--duration-fast) var(--easing-standard);
+}
+
+@keyframes modal-overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  background: var(--color-surface);
+  border-radius: var(--radius-xlarge);
+  box-shadow: var(--shadow-elevation-300);
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  animation: modal-in var(--duration-medium) var(--easing-standard);
+}
+
+.modal--small { max-width: 420px; }
+.modal--medium { max-width: 560px; }
+.modal--large { max-width: 720px; }
+
+@keyframes modal-in {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-500) var(--space-600);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.modal__title {
+  font-size: var(--font-size-500);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.modal__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-medium);
+  color: var(--color-text-subtle);
+  transition: background-color var(--duration-fast) var(--easing-standard),
+    color var(--duration-fast) var(--easing-standard);
+}
+.modal__close:hover {
+  background: var(--color-bg-subtle);
+  color: var(--color-text);
+}
+
+.modal__body {
+  padding: var(--space-600);
+  overflow-y: auto;
+  flex: 1;
+}
+
+.modal__footer {
+  padding: var(--space-400) var(--space-600);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-300);
+  background: var(--color-bg-subtle);
+  border-radius: 0 0 var(--radius-xlarge) var(--radius-xlarge);
+}
+
+@media (max-width: 540px) {
+  .modal-overlay { padding: 0; align-items: flex-end; }
+  .modal {
+    max-height: 95vh;
+    border-radius: var(--radius-xlarge) var(--radius-xlarge) 0 0;
+  }
+  .modal__footer {
+    border-radius: 0;
+  }
+}
