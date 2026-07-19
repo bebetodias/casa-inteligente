@@ -38,6 +38,12 @@
   --color-shopping-list-medium: #2a69ab;
   --color-shopping-list-bold: #304674;
 
+  /* Recipes */
+  --color-recipes-light: #ffced9;
+  --color-recipes-pure: #f7476d;
+  --color-recipes-medium: #cd284d;
+  --color-recipes-bold: #970726 ;
+
   /* Plants */
   --color-plants-light: #d9efe7;
   --color-plants-pure: #5c946e;

@@ -150,6 +150,14 @@
   background-size: contain;
 }
 
+.stat--spent {
+  background: var(--color-recipes-medium);
+  background-image: url(/src/assets/illustrations/money.svg);
+  background-repeat: no-repeat;
+  background-position: right;
+  background-size: contain;
+}
+
 .stat--maintenance {
   background: var(--color-maintenance-medium);
   background-image: url(/src/assets/illustrations/tools.svg);
@@ -223,9 +231,10 @@
   border-radius: var(--radius-large);
   position: relative;
 }
-.module-card__icon--brand { background: var(--color-brand-subtle); color: var(--color-brand); }
-.module-card__icon--success { background: var(--color-success-subtle); color: var(--color-success); }
-.module-card__icon--warning { background: var(--color-warning-subtle); color: var(--color-warning); }
+.module-card__icon--shopping { background: var(--color-shopping-list-medium); color: var(--color-shopping-list-light); }
+.module-card__icon--plant { background: var(--color-plants-medium); color: var(--color-plants-light); }
+.module-card__icon--maintenance { background: var(--color-maintenance-medium); color: var(--color-maintenance-light); }
+.module-card__icon--recipes { background: var(--color-recipes-medium); color: var(--color-recipes-light); }
 
 .module-card__badge {
   position: absolute;

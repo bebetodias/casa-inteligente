@@ -183,7 +183,7 @@ function StatsRow({ stats }) {
       }),
       hint: `${stats.compras.comprasNoMes} compras realizadas`,
       icon: 'money',
-      color: 'brand',
+      color: 'spent',
       to: '/compras',
     },
   ];
