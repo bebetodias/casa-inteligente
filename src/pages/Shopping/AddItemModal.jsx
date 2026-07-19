@@ -6,12 +6,11 @@ import { Button } from '../../components/primitives/Button';
 import { Badge } from '../../components/primitives/Badge';
 import { Avatar } from '../../components/primitives/Avatar';
 import { CATEGORIAS, getUnidadesComExtras, buscarNoCatalogo } from '../../services/mock/catalog';
-import { adicionarItem } from '../../services/mock/shoppingService';
 import { useAuthStore } from '../../stores/authStore';
 import { SearchIcon } from './ShoppingIcons';
 import './AddItemModal.css';
 
-export function AddItemModal({ open, onClose, onAdded, initialQuery = '' }) {
+export function AddItemModal({ open, onClose, onAdd, initialQuery = '' }) {
   const { user } = useAuthStore();
 
   const [nome, setNome] = useState(initialQuery);
@@ -79,17 +78,18 @@ export function AddItemModal({ open, onClose, onAdded, initialQuery = '' }) {
 
     setSubmitting(true);
     try {
-      const novoItem = await adicionarItem({
-        nome: nome.trim(),
-        categoria,                              // service usa pra inferir caso não ache
-        produtoId: null,                        // deixa o service criar o produto novo
-        quantidade: qtdNum,
-        unidade,
-        observacao: observacao.trim() || null,
-        membroId: user?.id,                     // >>> CORREÇÃO AQUI <<<
-      });
+      if (onAdd) {
+        await onAdd({
+          nome: nome.trim(),
+          categoria,                              
+          produtoId: null,                        
+          quantidade: qtdNum,
+          unidade,
+          observacao: observacao.trim() || null,
+          membroId: user?.id,                     
+        });
+      }
 
-      onAdded?.(novoItem);
       onClose();
     } catch (err) {
       console.error('Erro ao adicionar:', err);

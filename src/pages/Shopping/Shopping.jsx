@@ -240,12 +240,12 @@ export function Shopping() {
         <AddItemModal
           open={!!showAdd}
           onClose={() => setShowAdd(false)}
-          onAdded={async (novoItem) => {
-            await recarregar();   // >>> garante atualização visual <<<
+          onAdd={async (dados) => {
+            await adicionar(dados);
             showToast({
               tipo: 'success',
               titulo: 'Item adicionado!',
-              descricao: `${novoItem.nome} foi incluído na lista.`,
+              descricao: `${dados.nome} foi incluído na lista.`,
             });
           }}
         />
