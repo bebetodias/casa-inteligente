@@ -38,7 +38,7 @@ export function Modules() {
           const pendentes = compras.filter(c => !c.comprado);
           const compradosNoMes = compras.filter(c => c.comprado); // simplificado
 
-          const gastoEstimado = pendentes.reduce((acc, c) => acc + (Number(c.preco_sugerido) || 0), 0);
+          const gastoEstimado = pendentes.reduce((acc, c) => acc + (Number(c.preco_sugerido) || 0) * (Number(c.quantidade) || 1), 0);
 
           setStats({
             compras: {

@@ -3,7 +3,6 @@ import { useShoppingList } from '../../hooks/useShoppingList';
 import { useShoppingShortcuts } from '../../hooks/useKeyboardShortcuts';
 import { useAuthStore } from '../../stores/authStore';
 import { useToast } from '../../hooks/useToast';
-import { getSugestoes, getEstatisticasGerais } from '../../services/mock/shoppingService';
 import { CATEGORIAS } from '../../services/mock/catalog';
 import { Button } from '../../components/primitives/Button';
 import { Badge } from '../../components/primitives/Badge';
@@ -25,8 +24,6 @@ export function Shopping() {
     useShoppingList(casa?.id, user?.id);
 
   const searchInputRef = useRef(null);
-  const [sugestoes, setSugestoes] = useState([]);
-  const [stats, setStats] = useState(null);
   const [view, setView] = useState('list'); // 'list' | 'history'
   const [showAdd, setShowAdd] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -36,16 +33,54 @@ export function Shopping() {
   const [confirmClear, setConfirmClear] = useState(false);
   const [pendingRemove, setPendingRemove] = useState(null);
 
-  useEffect(() => {
-    let mounted = true;
-    Promise.all([getSugestoes(), getEstatisticasGerais()])
-      .then(([s, st]) => {
-        if (mounted) {
-          setSugestoes(s);
-          setStats(st);
+  const stats = useMemo(() => {
+    if (!itens) return null;
+    const agora = new Date();
+    const inicioMes = new Date(agora.getFullYear(), agora.getMonth(), 1);
+    const comprasNoMes = itens.filter(i => 
+      i.status === 'comprado' && new Date(i.criado_em) >= inicioMes
+    ).length;
+    return { comprasNoMes };
+  }, [itens]);
+
+  const sugestoes = useMemo(() => {
+    if (!itens) return [];
+    const agora = new Date();
+    const compras = itens.filter(i => i.status === 'comprado').sort((a, b) => new Date(a.criado_em) - new Date(b.criado_em));
+    const agrupado = {};
+    
+    for (const c of compras) {
+      const pId = c.produto.nome.toLowerCase(); // agrupar por nome, já que produto_id as vezes pode variar ou ser null
+      if (!agrupado[pId]) agrupado[pId] = [];
+      agrupado[pId].push(c);
+    }
+
+    const sug = [];
+    const itensPendentesNomes = new Set(itens.filter(i => i.status === 'pendente').map(i => i.produto.nome.toLowerCase()));
+
+    for (const [pId, hist] of Object.entries(agrupado)) {
+      if (hist.length >= 2 && !itensPendentesNomes.has(pId)) {
+        const ultima = new Date(hist[hist.length - 1].criado_em);
+        const penultima = new Date(hist[hist.length - 2].criado_em);
+        
+        const intervaloMedio = (ultima - penultima) / (1000 * 60 * 60 * 24);
+        const diasPassados = (agora - ultima) / (1000 * 60 * 60 * 24);
+
+        if (diasPassados >= intervaloMedio * 0.8) {
+           sug.push({
+             produto: {
+               id: hist[0].produto.id,
+               nome: hist[0].produto.nome,
+               categoria: hist[0].produto.categoria,
+               unidadePadrao: hist[0].unidade
+             },
+             diasPassados: Math.floor(diasPassados),
+             intervaloMedio: Math.round(intervaloMedio),
+           });
         }
-      });
-    return () => { mounted = false; };
+      }
+    }
+    return sug.sort((a, b) => (b.diasPassados / b.intervaloMedio) - (a.diasPassados / a.intervaloMedio));
   }, [itens]);
 
   useShoppingShortcuts({
@@ -76,7 +111,7 @@ export function Shopping() {
   }, [itensPendentes]);
 
   const gastoEstimado = useMemo(() => {
-    return itensPendentes.reduce((acc, item) => acc + (item.precoSugerido || 0), 0);
+    return itensPendentes.reduce((acc, item) => acc + (item.precoSugerido || 0) * (item.quantidade || 1), 0);
   }, [itensPendentes]);
 
   if (view === 'history') {
@@ -275,6 +310,7 @@ export function Shopping() {
       {drawerProdutoId && (
         <ProductDrawer
           produtoId={drawerProdutoId}
+          itens={itens}
           onClose={() => setDrawerProdutoId(null)}
           onReadd={async (produtoId) => {
             await readicionar(produtoId);

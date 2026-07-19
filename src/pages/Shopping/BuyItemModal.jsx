@@ -3,7 +3,6 @@ import { Modal } from '../../components/primitives/Modal';
 import { Input } from '../../components/primitives/Input';
 import { Select } from '../../components/primitives/Select';
 import { Button } from '../../components/primitives/Button';
-import { getHistorico } from '../../services/mock/shoppingService';
 import { UNIDADES } from '../../services/mock/catalog';
 import './BuyItemModal.css';
 

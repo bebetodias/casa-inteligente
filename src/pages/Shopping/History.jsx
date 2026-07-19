@@ -4,10 +4,6 @@ import { Input } from '../../components/primitives/Input';
 import { Select } from '../../components/primitives/Select';
 import { Badge } from '../../components/primitives/Badge';
 import { EmptyState } from '../../components/primitives/EmptyState';
-import {
-  getHistorico,
-  getEstatisticasGerais,
-} from '../../services/mock/shoppingService';
 import { CATEGORIAS } from '../../services/mock/catalog';
 import { CartIcon, SearchIcon, PriceIcon, LocationIcon } from './ShoppingIcons';
 import './History.css';
@@ -20,26 +16,26 @@ const PERIODOS = [
   { value: 'all', label: 'Todo o período' },
 ];
 
-export function History() {
-  const [historico, setHistorico] = useState([]);
-  const [stats, setStats] = useState(null);
-  const [loading, setLoading] = useState(true);
+export function History({ itens = [] }) {
   const [periodo, setPeriodo] = useState('30');
   const [busca, setBusca] = useState('');
   const [categoriaFiltro, setCategoriaFiltro] = useState('');
 
-  useEffect(() => {
-    setLoading(true);
-    const filtros = {};
-    if (periodo !== 'all') filtros.periodo = Number(periodo);
+  const historico = useMemo(() => {
+    const compras = itens.filter(i => i.status === 'comprado').sort((a, b) => new Date(b.criado_em) - new Date(a.criado_em));
+    if (periodo === 'all') return compras;
+    const limitDate = new Date();
+    limitDate.setDate(limitDate.getDate() - Number(periodo));
+    return compras.filter(c => new Date(c.criado_em) >= limitDate);
+  }, [itens, periodo]);
 
-    Promise.all([getHistorico({ ...filtros, limite: 200 }), getEstatisticasGerais()])
-      .then(([h, s]) => {
-        setHistorico(h);
-        setStats(s);
-      })
-      .finally(() => setLoading(false));
-  }, [periodo]);
+  const stats = useMemo(() => {
+    const agora = new Date();
+    const inicioMes = new Date(agora.getFullYear(), agora.getMonth(), 1);
+    const comprasMes = itens.filter(i => i.status === 'comprado' && new Date(i.criado_em) >= inicioMes);
+    const gastoTotalMes = comprasMes.reduce((acc, c) => acc + (c.precoSugerido || 0) * (c.quantidade || 1), 0);
+    return { gastoTotalMes };
+  }, [itens]);
 
   const filtrado = useMemo(() => {
     return historico.filter((item) => {
@@ -53,7 +49,7 @@ export function History() {
   const gruposPorData = useMemo(() => {
     const grupos = {};
     for (const item of filtrado) {
-      const dataKey = new Date(item.data).toLocaleDateString('pt-BR', {
+      const dataKey = new Date(item.criado_em).toLocaleDateString('pt-BR', {
         weekday: 'long',
         day: '2-digit',
         month: 'long',
@@ -129,14 +125,7 @@ export function History() {
         </div>
       </div>
 
-      {loading ? (
-        <div className="history__loading">
-          <div className="splash__loader">
-            <span></span><span></span><span></span>
-          </div>
-          <p>Carregando histórico...</p>
-        </div>
-      ) : filtrado.length === 0 ? (
+      {filtrado.length === 0 ? (
         <EmptyState
           icon="📋"
           title="Nenhuma compra encontrada"
@@ -149,7 +138,7 @@ export function History() {
       ) : (
         <div className="history__list">
           {gruposPorData.map(([data, items]) => {
-            const totalDia = items.reduce((acc, i) => acc + i.precoTotal, 0);
+            const totalDia = items.reduce((acc, i) => acc + (i.precoSugerido || 0) * (i.quantidade || 1), 0);
             return (
               <section key={data} className="history__group">
                 <header className="history__group-header">
@@ -183,14 +172,14 @@ export function History() {
                       </div>
                       <div className="history__item-price">
                         <strong>
-                          {item.precoTotal.toLocaleString('pt-BR', {
+                          {((item.precoSugerido || 0) * (item.quantidade || 1)).toLocaleString('pt-BR', {
                             style: 'currency',
                             currency: 'BRL',
                           })}
                         </strong>
-                        {item.precoUnitario && (
+                        {item.precoSugerido > 0 && (
                           <span>
-                            {(item.precoTotal / item.quantidade).toLocaleString('pt-BR', {
+                            {(item.precoSugerido).toLocaleString('pt-BR', {
                               style: 'currency',
                               currency: 'BRL',
                             })}/{item.unidade}

@@ -117,10 +117,14 @@ export function useShoppingList(casaId, membroId) {
   }, []);
 
   const comprar = useCallback(async (dados) => {
-    // dados contem itemId e possivelmente preco
     const { error } = await supabase
       .from('compras')
-      .update({ comprado: true })
+      .update({ 
+        comprado: true,
+        quantidade: dados.quantidade || 1,
+        unidade: dados.unidade,
+        preco_sugerido: dados.precoTotal ? (dados.precoTotal / (dados.quantidade || 1)) : 0
+      })
       .eq('id', dados.itemId);
 
     if (error) throw new Error(error.message);

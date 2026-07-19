@@ -2,43 +2,68 @@ import { useEffect, useState } from 'react';
 import { Drawer } from '../../components/primitives/Drawer';
 import { Badge } from '../../components/primitives/Badge';
 import { Button } from '../../components/primitives/Button';
-import { Avatar } from '../../components/primitives/Avatar';
 import { CATEGORIAS } from '../../services/mock/catalog';
-import {
-  getEstatisticasProduto,
-  getHistorico,
-} from '../../services/mock/shoppingService';
+import { CloseIcon, PlusIcon, ChartIcon } from './ShoppingIcons';
 import { PriceChart } from './PriceChart';
 import './ProductDrawer.css';
 
-export function ProductDrawer({ produtoId, onClose, onReadd }) {
+export function ProductDrawer({ produtoId, onClose, onReadd, itens = [] }) {
   const [stats, setStats] = useState(null);
-  const [historico, setHistorico] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!produtoId) return;
-    Promise.all([
-      getEstatisticasProduto(produtoId),
-      getHistorico({ produtoId, limite: 30 }),
-    ]).then(([s, h]) => {
-      setStats(s);
-      setHistorico(h);
-      setLoading(false);
-    });
-  }, [produtoId]);
+    const history = itens.filter(i => i.produto.id === produtoId && i.status === 'comprado').sort((a, b) => new Date(a.criado_em) - new Date(b.criado_em));
+    
+    if (history.length === 0) {
+      const pending = itens.find(i => i.produto.id === produtoId);
+      if (pending) {
+        setStats({
+          produto: pending.produto,
+          totalCompras: 0,
+          historico: []
+        });
+      }
+      return;
+    }
 
-  if (!stats && loading) {
-    return (
-      <Drawer open onClose={onClose} title="Carregando..." width="medium">
-        <div className="drawer-loading">
-          <div className="splash__loader">
-            <span></span><span></span><span></span>
-          </div>
-        </div>
-      </Drawer>
-    );
-  }
+    const precos = history.map(h => (h.precoSugerido || 0) * (h.quantidade || 1));
+    const precoMedio = precos.reduce((a, b) => a + b, 0) / precos.length;
+    const precoMinimo = Math.min(...precos);
+    const precoMaximo = Math.max(...precos);
+    const ultimo = history[history.length - 1];
+    
+    let freqMedia = null;
+    if (history.length >= 2) {
+      const primeiro = history[0];
+      const diff = (new Date(ultimo.criado_em) - new Date(primeiro.criado_em)) / (1000 * 60 * 60 * 24);
+      freqMedia = Math.round(diff / (history.length - 1));
+    }
+    
+    let previsao = null;
+    if (freqMedia && ultimo) {
+      const data = new Date(ultimo.criado_em);
+      data.setDate(data.getDate() + freqMedia);
+      previsao = data;
+    }
+    
+    const diasDesde = Math.floor((new Date() - new Date(ultimo.criado_em)) / (1000 * 60 * 60 * 24));
+
+    setStats({
+      produto: history[0].produto,
+      totalCompras: history.length,
+      precoMedio,
+      precoMinimo,
+      precoMaximo,
+      ultimoPreco: (ultimo.precoSugerido || 0) * (ultimo.quantidade || 1),
+      frequenciaMedia: freqMedia,
+      previsaoProximaCompra: previsao,
+      diasDesdeUltimaCompra: diasDesde,
+      historico: history.slice(-12).map(h => ({
+        data: h.criado_em,
+        precoUnitario: h.precoSugerido || 0
+      })),
+      historicoObj: history
+    });
+  }, [produtoId, itens]);
 
   if (!stats) return null;
 
@@ -109,14 +134,13 @@ export function ProductDrawer({ produtoId, onClose, onReadd }) {
             <section className="product-drawer__section">
               <h3 className="product-drawer__section-title">Histórico de compras</h3>
               <ul className="product-drawer__history">
-                {historico.map((c) => (
+                {stats.historicoObj.map((c) => (
                   <li key={c.id} className="product-drawer__history-item">
                     <div className="product-drawer__history-date">
-                      <strong>{formatDate(c.data)}</strong>
-                      {c.local && <span>{c.local}</span>}
+                      <strong>{formatDate(c.criado_em)}</strong>
                     </div>
                     <div className="product-drawer__history-info">
-                      <strong>{formatMoney(c.precoTotal)}</strong>
+                      <strong>{formatMoney((c.precoSugerido || 0) * (c.quantidade || 1))}</strong>
                       <span>{c.quantidade} {c.unidade}</span>
                     </div>
                   </li>
