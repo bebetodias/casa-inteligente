@@ -20,11 +20,23 @@ export function InviteShare() {
       return;
     }
 
+    // Se a casa já tiver um código válido, não precisamos ficar gerando um novo toda hora.
+    // Assim evitamos sobrescrever o código que a pessoa acabou de compartilhar.
+    if (casa.codigo_convite && casa.token_convite) {
+      setInviteData({
+        codigo: casa.codigo_convite,
+        token: casa.token_convite,
+        link: `${window.location.origin}${window.location.pathname}#/convite/${casa.token_convite}`,
+      });
+      setLoading(false);
+      return;
+    }
+
     generateInvite(casa.id, user.id)
       .then(data => setInviteData(data))
       .catch(err => console.error(err))
       .finally(() => setLoading(false));
-  }, [casa, user, generateInvite, navigate]);
+  }, [casa?.id, user?.id, generateInvite, navigate]); // Dependências corrigidas para IDs, não o objeto casa
 
   const handleCopyLink = async () => {
     if (!inviteData) return;

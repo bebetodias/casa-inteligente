@@ -13,6 +13,9 @@ try {
 
   // 3. Inicializar git e dar push forçado para a branch gh-pages
   console.log('Deploying to gh-pages...');
+  if (fs.existsSync('.git')) {
+    fs.rmSync('.git', { recursive: true, force: true });
+  }
   execSync('git init', { stdio: 'inherit' });
   execSync('git checkout -b gh-pages', { stdio: 'inherit' });
   execSync('git add -A', { stdio: 'inherit' });
