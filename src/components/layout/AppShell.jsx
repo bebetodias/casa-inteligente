@@ -19,7 +19,7 @@ export function AppShell() {
       <aside className={`app-shell__sidebar ${sidebarOpen ? 'app-shell__sidebar--open' : ''}`}>
         <div className="app-shell__brand">
           <div className="app-shell__brand-logo">
-            <img src="/logo.svg" alt="Casa Inteligente" />
+            <img src="/casa-inteligente/logo-homecare.svg" alt="Casa Inteligente" />
           </div>
           <button className="app-shell__sidebar-close" onClick={closeSidebar} aria-label="Fechar menu">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
