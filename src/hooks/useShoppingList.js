@@ -85,6 +85,7 @@ export function useShoppingList(casaId, membroId) {
       unidade: dados.unidade || 'un',
       preco_sugerido: dados.precoSugerido || 0,
       comprado: false,
+      criado_em: new Date().toISOString(),
       criado_por: membroId,
     };
 

@@ -36,15 +36,23 @@ export function Modules() {
 
         if (!error && compras) {
           const pendentes = compras.filter(c => !c.comprado);
-          const compradosNoMes = compras.filter(c => c.comprado); // simplificado
+          const compradosNoMes = compras.filter(c => {
+            if (!c.comprado) return false;
+            const itemDate = new Date(c.criado_em);
+            const agora = new Date();
+            return itemDate.getMonth() === agora.getMonth() && itemDate.getFullYear() === agora.getFullYear();
+          });
 
-          const gastoEstimado = pendentes.reduce((acc, c) => acc + (Number(c.preco_sugerido) || 0) * (Number(c.quantidade) || 1), 0);
+          // Gasto do mês inclui as compras já feitas no mês MAIS a estimativa do que está na lista (pendente)
+          const gastoComprasMes = compradosNoMes.reduce((acc, c) => acc + (Number(c.preco_sugerido) || 0) * (Number(c.quantidade) || 1), 0);
+          const gastoPendentes = pendentes.reduce((acc, c) => acc + (Number(c.preco_sugerido) || 0) * (Number(c.quantidade) || 1), 0);
+          const gastoTotalEstimado = gastoComprasMes + gastoPendentes;
 
           setStats({
             compras: {
               itensNaLista: pendentes.length,
               comprasNoMes: compradosNoMes.length,
-              gastoEstimado: gastoEstimado,
+              gastoEstimado: gastoTotalEstimado,
             },
             receitas: { receitasFavoritas: 0, ingredientesDisponiveis: 0 },
             plantas: { total: 0, precisamCuidado: 0 },

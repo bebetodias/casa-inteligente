@@ -13,7 +13,7 @@ export function Profile() {
     nome: user?.nome || '',
     email: user?.email || '',
     senha: '',
-    avatar: user?.avatar || ''
+    avatar: user?.avatar_url || user?.avatar || ''
   });
 
   const [isLoading, setIsLoading] = useState(false);

@@ -22,7 +22,11 @@ export function History({ itens = [] }) {
   const [categoriaFiltro, setCategoriaFiltro] = useState('');
 
   const historico = useMemo(() => {
-    const compras = itens.filter(i => i.status === 'comprado').sort((a, b) => new Date(b.criado_em) - new Date(a.criado_em));
+    const compras = itens.filter(i => i.status === 'comprado').map(i => ({
+      ...i,
+      criado_em: i.criado_em || new Date().toISOString()
+    })).sort((a, b) => new Date(b.criado_em) - new Date(a.criado_em));
+    
     if (periodo === 'all') return compras;
     const limitDate = new Date();
     limitDate.setDate(limitDate.getDate() - Number(periodo));

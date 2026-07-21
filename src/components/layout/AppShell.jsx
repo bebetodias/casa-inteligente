@@ -45,7 +45,7 @@ export function AppShell() {
           </button>
           <div className="app-shell__user">
             <div className="app-shell__user-info" onClick={() => navigate('/perfil')} role="button" tabIndex={0}>
-              <Avatar name={user?.nome} src={user?.avatar} size="small" />
+              <Avatar name={user?.nome} src={user?.avatar_url || user?.avatar} size="small" />
               <span>{user?.nome}</span>
             </div>
             <button onClick={() => { logout(); navigate('/login'); }}>
