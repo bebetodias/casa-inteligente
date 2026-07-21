@@ -1,0 +1,33 @@
+.add-plant-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-sm);
+}
+
+.add-plant-form__row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--spacing-md);
+}
+
+.add-plant-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+}
+
+@media (max-width: 480px) {
+  .add-plant-form__row {
+    grid-template-columns: 1fr;
+  }
+  
+  .add-plant-form__actions {
+    flex-direction: column-reverse;
+  }
+  
+  .add-plant-form__actions button {
+    width: 100%;
+  }
+}

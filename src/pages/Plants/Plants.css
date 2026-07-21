@@ -1,0 +1,202 @@
+.plants-page {
+  padding: var(--spacing-md);
+  padding-bottom: 80px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.plants__header {
+  margin-bottom: var(--spacing-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.plants__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text-dark);
+}
+
+.plants__subtitle {
+  font-size: 0.875rem;
+  color: var(--color-text-light);
+  margin-top: 2px;
+}
+
+.plants__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.plant-card {
+  background: white;
+  border-radius: var(--radius-large);
+  padding: var(--spacing-md);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  position: relative;
+  border: 1px solid var(--color-border);
+}
+
+.plant-card__status-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  border-radius: var(--radius-large) var(--radius-large) 0 0;
+}
+
+.plant-card__status-bar--urgent {
+  background: var(--color-danger);
+}
+
+.plant-card__status-bar--warning {
+  background: var(--color-warning);
+}
+
+.plant-card__status-bar--good {
+  background: var(--color-success);
+}
+
+.plant-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.plant-card__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--color-plants-light);
+  color: var(--color-plants-bold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.plant-card__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.plant-card__name {
+  font-weight: 600;
+  color: var(--color-text-dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.plant-card__specie {
+  font-size: 0.75rem;
+  color: var(--color-text-light);
+}
+
+.plant-card__details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-sm);
+  background: var(--color-bg-subtle);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-medium);
+}
+
+.plant-card__detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.plant-card__detail-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: var(--color-text-light);
+  letter-spacing: 0.5px;
+}
+
+.plant-card__detail-value {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-dark);
+}
+
+.plant-card__actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-top: auto;
+}
+
+.plant-card__btn-regar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-medium);
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--color-shopping-list-medium);
+  color: white;
+  transition: opacity 0.2s;
+}
+
+.plant-card__btn-regar:hover {
+  opacity: 0.9;
+}
+
+.plant-card__btn-delete {
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-medium);
+  border: 1px solid var(--color-border);
+  background: white;
+  color: var(--color-text-light);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.plant-card__btn-delete:hover {
+  background: var(--color-danger-subtle);
+  color: var(--color-danger);
+  border-color: var(--color-danger-subtle);
+}
+
+/* FAB */
+.plants__fab {
+  position: fixed;
+  bottom: var(--spacing-lg);
+  right: var(--spacing-lg);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--color-plants-pure);
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(92, 148, 110, 0.4);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  z-index: 10;
+}
+
+.plants__fab:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(92, 148, 110, 0.5);
+}
+
+.plants__fab:active {
+  transform: translateY(0);
+}

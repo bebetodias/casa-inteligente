@@ -48,6 +48,23 @@ export function Modules() {
           const gastoPendentes = pendentes.reduce((acc, c) => acc + (Number(c.preco_sugerido) || 0) * (Number(c.quantidade) || 1), 0);
           const gastoTotalEstimado = gastoComprasMes + gastoPendentes;
 
+          const { data: plantasData } = await supabase.from('plantas').select('*').eq('casa_id', casa.id);
+          const plantas = plantasData || [];
+          
+          let plantasPrecisamCuidado = 0;
+          const hoje = new Date();
+          hoje.setHours(0,0,0,0);
+          
+          plantas.forEach(p => {
+            const last = new Date(p.ultima_rega);
+            last.setHours(0,0,0,0);
+            const next = new Date(last);
+            next.setDate(next.getDate() + (p.frequencia_rega || 7));
+            if (next <= hoje) {
+              plantasPrecisamCuidado++;
+            }
+          });
+
           setStats({
             compras: {
               itensNaLista: pendentes.length,
@@ -55,7 +72,7 @@ export function Modules() {
               gastoEstimado: gastoTotalEstimado,
             },
             receitas: { receitasFavoritas: 0, ingredientesDisponiveis: 0 },
-            plantas: { total: 0, precisamCuidado: 0 },
+            plantas: { total: plantas.length, precisamCuidado: plantasPrecisamCuidado },
             manutencao: { pendentes: 0, concluidasNoMes: 0 },
           });
 
