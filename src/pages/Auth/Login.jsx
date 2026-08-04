@@ -53,7 +53,7 @@ export function Login() {
             <svg viewBox="0 0 64 64" aria-hidden="true">
               <path
                 d="M32 4 L60 24 V58 H40 V40 H24 V58 H4 V24 Z"
-                fill="var(--color-text-inverse)"
+                fill="var(--surface)"
               />
             </svg>
           </div>

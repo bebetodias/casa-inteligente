@@ -39,18 +39,18 @@ export function PriceChart({ historico }) {
       <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" className="price-chart__svg">
         <defs>
           <linearGradient id="priceGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="var(--color-brand)" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="var(--color-brand)" stopOpacity="0" />
+            <stop offset="0%" stopColor="var(--brand)" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="var(--brand)" stopOpacity="0" />
           </linearGradient>
         </defs>
         <path d={pathArea} fill="url(#priceGradient)" />
-        <path d={pathLine} fill="none" stroke="var(--color-brand)"
+        <path d={pathLine} fill="none" stroke="var(--brand)"
           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         {pontos.map((p, i) => (
           <g key={i}>
-            <circle cx={p.x} cy={p.y} r="3" fill="var(--color-brand)" />
+            <circle cx={p.x} cy={p.y} r="3" fill="var(--brand)" />
             {i === pontos.length - 1 && (
-              <circle cx={p.x} cy={p.y} r="6" fill="var(--color-brand-subtle)" />
+              <circle cx={p.x} cy={p.y} r="6" fill="var(--brand-subtle)" />
             )}
           </g>
         ))}

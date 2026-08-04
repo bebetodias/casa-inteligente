@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { CloseIcon } from '../../utils/Icons';
 import './Modal.css';
 
 export function Modal({ open, onClose, title, children, footer, size = 'medium' }) {
@@ -36,10 +37,7 @@ export function Modal({ open, onClose, title, children, footer, size = 'medium' 
             onClick={onClose}
             aria-label="Fechar"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M6 6 L18 18 M18 6 L6 18" stroke="currentColor"
-                strokeWidth="2" strokeLinecap="round" />
-            </svg>
+            <CloseIcon size={20} />
           </button>
         </header>
         <div className="modal__body">{children}</div>

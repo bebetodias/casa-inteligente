@@ -7,7 +7,7 @@ import { Badge } from '../../components/primitives/Badge';
 import { Avatar } from '../../components/primitives/Avatar';
 import { CATEGORIAS, getUnidadesComExtras, buscarNoCatalogo } from '../../services/mock/catalog';
 import { useAuthStore } from '../../stores/authStore';
-import { SearchIcon } from './ShoppingIcons';
+import { SearchIcon } from '../../utils/Icons';
 import './AddItemModal.css';
 
 export function AddItemModal({ open, onClose, onAdd, initialQuery = '' }) {

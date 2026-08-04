@@ -15,12 +15,12 @@
 .plants__title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--color-text-dark);
+  color: var(--ink-dark);
 }
 
 .plants__subtitle {
   font-size: 0.875rem;
-  color: var(--color-text-light);
+  color: var(--ink-light);
   margin-top: 2px;
 }
 
@@ -39,7 +39,7 @@
   flex-direction: column;
   gap: var(--spacing-md);
   position: relative;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--line);
 }
 
 .plant-card__status-bar {
@@ -89,7 +89,7 @@
 
 .plant-card__name {
   font-weight: 600;
-  color: var(--color-text-dark);
+  color: var(--ink-dark);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -97,14 +97,14 @@
 
 .plant-card__specie {
   font-size: 0.75rem;
-  color: var(--color-text-light);
+  color: var(--ink-light);
 }
 
 .plant-card__details {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--spacing-sm);
-  background: var(--color-bg-subtle);
+  background: var(--paper);
   padding: var(--spacing-sm);
   border-radius: var(--radius-medium);
 }
@@ -118,14 +118,14 @@
 .plant-card__detail-label {
   font-size: 0.65rem;
   text-transform: uppercase;
-  color: var(--color-text-light);
+  color: var(--ink-light);
   letter-spacing: 0.5px;
 }
 
 .plant-card__detail-value {
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--color-text-dark);
+  color: var(--ink-dark);
 }
 
 .plant-card__actions {
@@ -157,9 +157,9 @@
 .plant-card__btn-delete {
   padding: var(--spacing-sm);
   border-radius: var(--radius-medium);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--line);
   background: white;
-  color: var(--color-text-light);
+  color: var(--ink-light);
   cursor: pointer;
   display: flex;
   align-items: center;

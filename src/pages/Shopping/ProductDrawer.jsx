@@ -3,7 +3,7 @@ import { Drawer } from '../../components/primitives/Drawer';
 import { Badge } from '../../components/primitives/Badge';
 import { Button } from '../../components/primitives/Button';
 import { CATEGORIAS } from '../../services/mock/catalog';
-import { CloseIcon, PlusIcon, ChartIcon } from './ShoppingIcons';
+import { CloseIcon, PlusIcon, ChartIcon } from '../../utils/Icons';
 import { PriceChart } from './PriceChart';
 import './ProductDrawer.css';
 

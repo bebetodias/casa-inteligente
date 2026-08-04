@@ -14,7 +14,7 @@ import { BuyItemModal } from './BuyItemModal';
 import { SuggestionsPanel } from './SuggestionsPanel';
 import { ProductDrawer } from './ProductDrawer';
 import { History } from './History';
-import { CartIcon, PlusIcon, TrashIcon, SparkleIcon } from './ShoppingIcons';
+import { CartIcon, PlusIcon, TrashIcon, SparkleIcon } from '../../utils/Icons';
 import './Shopping.css';
 
 export function Shopping() {
@@ -151,22 +151,18 @@ export function Shopping() {
     <div className="shopping">
       <header className="shopping__header">
         <div className="shopping__title-area">
-          <div className="shopping__title-icon">
-            <CartIcon size={24} />
-          </div>
-          <div>
+            <p className="shopping__eyebrow">{casa?.nome}</p>
             <h1 className="shopping__title">Lista de Compras</h1>
             <p className="shopping__subtitle">
-              {casa?.nome} · {itensPendentes.length}{' '}
+              {itensPendentes.length}{' '}
               {itensPendentes.length === 1 ? 'item pendente' : 'itens pendentes'}
             </p>
-          </div>
         </div>
         <div className="shopping__actions">
           <ViewSwitcher view={view} setView={setView} compact />
           {itensPendentes.length > 0 && (
             <Button
-              variant="subtle"
+              variant="link"
               size="medium"
               iconBefore={<TrashIcon size={16} />}
               onClick={() => setConfirmClear(true)}
@@ -239,12 +235,14 @@ export function Shopping() {
         />
       ) : (
         <div className="shopping__list">
+          <div className="shopping__list-header">
+            <h2>Para comprar</h2>
+            <span>{itensPendentes.length} itens</span>
+          </div>
           {grupos.map((grupo) => (
             <section key={grupo.categoria} className="shopping__group">
               <header className="shopping__group-header">
-                <span className="shopping__group-icon" aria-hidden="true">
-                  {grupo.meta.icon}
-                </span>
+                <span className="shopping__group-icon" aria-hidden="true"></span>
                 <h2 className="shopping__group-title">{grupo.meta.nome}</h2>
                 <Badge variant="neutral">{grupo.items.length}</Badge>
               </header>
@@ -369,18 +367,19 @@ function ShoppingItemWrapper({ item, index, onBuy, onDetails, onEdit, onRemove }
   };
 
   return (
-    <div
+    /*<div
       className={`shopping-item-wrapper ${leaving ? 'shopping-item-wrapper--leaving' : ''}`}
       style={{ animationDelay: `${index * 30}ms` }}
-    >
+    >*/
       <ShoppingItem
         item={item}
         onBuy={handleBuy}
         onDetails={onDetails}
         onEdit={onEdit}
         onRemove={onRemove}
+        leaving={leaving}
       />
-    </div>
+    /*</div>*/
   );
 }
 

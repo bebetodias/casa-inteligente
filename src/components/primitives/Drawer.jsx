@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { CloseIcon } from '../../utils/Icons';
 import './Drawer.css';
 
 export function Drawer({ open, onClose, title, children, footer, width = 'medium' }) {
@@ -27,10 +28,7 @@ export function Drawer({ open, onClose, title, children, footer, width = 'medium
         <header className="drawer__header">
           <h2 id="drawer-title" className="drawer__title">{title}</h2>
           <button className="drawer__close" onClick={onClose} aria-label="Fechar">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M6 6 L18 18 M18 6 L6 18"
-                stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
+            <CloseIcon size={20} />
           </button>
         </header>
         <div className="drawer__body">{children}</div>

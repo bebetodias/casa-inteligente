@@ -11,7 +11,7 @@
 .drawer {
   position: fixed;
   top: 0; right: 0; bottom: 0;
-  background: var(--color-surface);
+  background: var(--surface);
   display: flex;
   flex-direction: column;
   box-shadow: var(--shadow-elevation-300);
@@ -31,14 +31,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--space-500) var(--space-600);
-  border-bottom: 1px solid var(--color-border);
+  padding: var(--size-500) var(--size-600);
+  border-bottom: 1px solid var(--line);
 }
 
 .drawer__title {
-  font-size: var(--font-size-500);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text);
+  font-size: var(--size-500);
+  font-weight: var(--fw-semibold);
+  color: var(--ink);
 }
 
 .drawer__close {
@@ -48,25 +48,25 @@
   width: 32px;
   height: 32px;
   border-radius: var(--radius-medium);
-  color: var(--color-text-subtle);
+  color: var(--muted);
 }
 .drawer__close:hover {
-  background: var(--color-bg-subtle);
-  color: var(--color-text);
+  background: var(--paper);
+  color: var(--ink);
 }
 
 .drawer__body {
-  padding: var(--space-600);
+  padding: var(--size-600);
   overflow-y: auto;
   flex: 1;
 }
 
 .drawer__footer {
-  padding: var(--space-400) var(--space-600);
-  border-top: 1px solid var(--color-border);
+  padding: var(--size-400) var(--size-600);
+  border-top: 1px solid var(--line);
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: var(--space-300);
-  background: var(--color-bg-subtle);
+  gap: var(--size-300);
+  background: var(--paper);
 }

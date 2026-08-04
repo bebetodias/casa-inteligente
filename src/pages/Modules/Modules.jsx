@@ -117,18 +117,19 @@ export function Modules() {
     <div className="modules">
       <header className="modules__header">
         <div className="modules__greeting">
+          <p className="modules__eyebrow">
+            {casa?.nome}
+          </p>
           <p className="modules__subtitle">
             {saudacao}, {primeiroNome}!
           </p>
           <h1 className="modules__title">
-            O que vamos cuidar hoje na <strong>{casa?.nome}</strong>?
+            O que vamos <em>cuidar</em> hoje?
           </h1>
           
         </div>
         <div className="modules__invite">
           <Button
-            variant="secondary"
-            size="medium"
             iconBefore={<ShareIcon />}
             onClick={() => navigate('/convite/compartilhar')}
           >
@@ -185,7 +186,7 @@ function StatsRow({ stats }) {
       to: '/compras',
     },
     {
-      label: 'Plantas precisam de cuidado',
+      label: 'Plantas para cuidar',
       value: stats.plantas.precisamCuidado,
       hint: `de ${stats.plantas.total} cadastradas`,
       icon: 'plant',
@@ -221,11 +222,10 @@ function StatsRow({ stats }) {
           className={`stat stat--${item.color}`}
           onClick={() => item.to && (window.location.hash = item.to)}
         >
-          <div className="stat__content">
-            <div className="stat__value">{item.value}</div>
-            <div className="stat__label">{item.label}</div>
-            <div className="stat__hint">{item.hint}</div>
-          </div>
+          <div className="stat__icon"><ModuleIcon name={item.icon} size={16} /></div>
+          <div className="stat__value">{item.value}</div>
+          <div className="stat__label">{item.label}</div>
+          <div className="stat__hint">{item.hint}</div>
         </button>
       ))}
     </section>
@@ -237,13 +237,13 @@ function ModuleCard({ modulo, stats }) {
 
   return (
     <Card isInteractive onClick={() => navigate(modulo.rota)} className="module-card">
+      {modulo.badge && (
+        <Badge variant={modulo.badge.variant} className="module-card__badge">
+          {modulo.badge.texto}
+        </Badge>
+      )}
       <div className={`module-card__icon module-card__icon--${modulo.cor}`}>
         <ModuleIcon name={modulo.icon} size={28} />
-        {modulo.badge && (
-          <Badge variant={modulo.badge.variant} className="module-card__badge">
-            {modulo.badge.texto}
-          </Badge>
-        )}
       </div>
       <div className="module-card__body">
         <h3 className="module-card__title">{modulo.nome}</h3>

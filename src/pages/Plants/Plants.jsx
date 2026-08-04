@@ -94,7 +94,7 @@ export function Plants() {
                     <span className="plant-card__detail-label">Próxima Rega</span>
                     <span className="plant-card__detail-value" style={{ 
                       color: status.state === 'urgent' ? 'var(--color-danger)' : 
-                             status.state === 'warning' ? 'var(--color-warning)' : 'var(--color-text-dark)'
+                             status.state === 'warning' ? 'var(--color-warning)' : 'var(--ink-dark)'
                     }}>
                       {status.text}
                     </span>

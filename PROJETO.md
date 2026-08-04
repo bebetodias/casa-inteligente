@@ -142,7 +142,6 @@ casa-inteligente/
 │ │ ├── PriceChart.jsx + .css
 │ │ ├── History.jsx + .css
 │ │ ├── SuggestionsPanel.jsx + .css
-│ │ └── ShoppingIcons.jsx
 │ ├── hooks/
 │ │ ├── useShoppingList.js
 │ │ ├── useExitConfirm.js
@@ -151,12 +150,14 @@ casa-inteligente/
 │ ├── stores/
 │ │ └── authStore.js
 │ └── services/
-│ └── mock/
-│ ├── catalog.js
+│ │ └── mock/
+| |   ├── catalog.js
+| |   └── modulesMock.js
+│ └── utils/
+│ │ └── Icons.jsx
 │ ├── schema.js
 │ ├── seed.js
 │ ├── shoppingService.js
-│ └── modulesMock.js
 ├── index.html
 ├── vite.config.js
 ├── package.json
@@ -297,25 +298,25 @@ type UnidadeId =
 /* src/styles/tokens.css */
 :root {
   /* === CORES BASE === */
-  --color-brand: #0052cc;
-  --color-brand-hover: #0747a6;
-  --color-brand-subtle: #deebff;
+  --brand: #0052cc;
+  --brand-hover: #0747a6;
+  --brand-subtle: #deebff;
 
   /* === SUPERFÍCIES === */
-  --color-bg: #f4f5f7;
-  --color-surface: #ffffff;
-  --color-surface-hover: #fafbfc;
-  --color-bg-subtle: #f4f5f7;
+  --surface: #f4f5f7;
+  --surface: #ffffff;
+  --surface-hover: #fafbfc;
+  --paper: #f4f5f7;
 
   /* === TEXTO === */
-  --color-text: #172b4d;
-  --color-text-subtle: #5e6c84;
-  --color-text-subtlest: #7a869a;
-  --color-text-inverse: #ffffff;
+  --ink: #172b4d;
+  --muted: #5e6c84;
+  --muted-2: #7a869a;
+  --surface: #ffffff;
 
   /* === BORDAS === */
-  --color-border: #dfe1e6;
-  --color-border-bold: #c1c7d0;
+  --line: #dfe1e6;
+  --line-bold: #c1c7d0;
 
   /* === FEEDBACK === */
   --color-success: #00875a;
@@ -336,17 +337,17 @@ type UnidadeId =
 
 ```css
 :root {
-  --space-0: 0;
-  --space-100: 4px;
-  --space-200: 8px;
-  --space-300: 12px;
-  --space-400: 16px;
-  --space-500: 20px;
-  --space-600: 24px;
-  --space-700: 32px;
-  --space-800: 40px;
-  --space-900: 48px;
-  --space-1000: 64px;
+  --size-0: 0;
+  --size-100: 4px;
+  --size-200: 8px;
+  --size-300: 12px;
+  --size-400: 16px;
+  --size-500: 20px;
+  --size-600: 24px;
+  --size-700: 32px;
+  --size-800: 40px;
+  --size-900: 48px;
+  --size-1000: 64px;
 }
 ```
 
@@ -354,19 +355,19 @@ type UnidadeId =
 
 ```css
 :root {
-  --font-family-base:
+  --ff-text-base:
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-size-200: 12px;
-  --font-size-300: 14px;
-  --font-size-400: 16px;
-  --font-size-500: 20px;
-  --font-size-600: 24px;
-  --font-size-700: 32px;
+  --size-300: 12px;
+  --size-350: 14px;
+  --size-400: 16px;
+  --size-500: 20px;
+  --size-600: 24px;
+  --size-800: 32px;
 
-  --font-weight-regular: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
 
   --line-height-200: 1.25;
   --line-height-300: 1.5;
@@ -518,7 +519,7 @@ atualizarPerfil(dados): Promise<void>
 | Services      | `camelCase`                   | `shoppingService.js`     |
 | Stores        | `camelCase` + sufixo `Store`  | `authStore.js`           |
 | Constantes    | `UPPER_SNAKE_CASE`            | `CATEGORIAS`, `UNIDADES` |
-| Variáveis CSS | `kebab-case`                  | `--color-brand`          |
+| Variáveis CSS | `kebab-case`                  | `--brand`                |
 | Classes CSS   | BEM simplificado              | `.add-form__error`       |
 
 ### Imports — Ordem Obrigatória
@@ -545,7 +546,7 @@ import "./AddItemModal.css";
 
 ### CSS
 
-- **Sempre usar tokens** (`var(--color-brand)`, nunca `#0052cc`)
+- **Sempre usar tokens** (`var(--brand)`, nunca `#0052cc`)
 - Mobile-first (começa com mobile, `@media (min-width:)` para desktop)
 - BEM simplificado: `.component`, `.component__element`, `.component--modifier`
 

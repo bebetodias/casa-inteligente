@@ -2,16 +2,16 @@
 @import './reset.css';
 
 body {
-  font-family: var(--font-family);
-  font-size: var(--font-size-300);
+  font-family: var(--ff-text);
+  font-size: var(--size-350);
   line-height: var(--line-height-300);
-  color: var(--color-text);
-  background-color: var(--color-bg);
+  color: var(--ink);
+  background-color: var(--surface);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-brand);
+  outline: 2px solid var(--brand);
   outline-offset: 2px;
 }

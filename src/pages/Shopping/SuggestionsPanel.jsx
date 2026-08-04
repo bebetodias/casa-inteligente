@@ -1,6 +1,6 @@
 import { Badge } from '../../components/primitives/Badge';
 import { Button } from '../../components/primitives/Button';
-import { SparkleIcon, PlusIcon } from './ShoppingIcons';
+import { SparkleIcon, PlusIcon } from '../../utils/Icons';
 import './SuggestionsPanel.css';
 
 export function SuggestionsPanel({ sugestoes, onAdd, onToggleExpand, expanded }) {

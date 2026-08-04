@@ -1,4 +1,5 @@
 import './Select.css';
+import { ChevronDownIcon } from '../../utils/Icons';
 
 export function Select({
   label,
@@ -37,10 +38,7 @@ export function Select({
           ))}
         </select>
         <span className="select__chevron" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <path d="M6 9 L12 15 L18 9" stroke="currentColor"
-              strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          <ChevronDownIcon size={16} />
         </span>
       </div>
       {hint && !error && <span className="field__hint">{hint}</span>}

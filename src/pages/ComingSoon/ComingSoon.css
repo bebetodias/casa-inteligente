@@ -1,7 +1,7 @@
 .coming-soon {
   display: flex;
   flex-direction: column;
-  gap: var(--space-600);
+  gap: var(--size-600);
   animation: coming-fade-in var(--duration-medium) var(--easing-standard);
   height: 100%;
 }
@@ -9,17 +9,17 @@
 .coming-soon__header {
   display: flex;
   align-items: center;
-  gap: var(--space-300);
-  padding-bottom: var(--space-300);
-  border-bottom: 1px solid var(--color-border);
+  gap: var(--size-300);
+  padding-bottom: var(--size-300);
+  border-bottom: 1px solid var(--line);
 }
 
 .coming-soon__back {
   background: none;
   border: none;
-  color: var(--color-text-subtle);
+  color: var(--muted);
   cursor: pointer;
-  padding: var(--space-100);
+  padding: var(--size-100);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,14 +28,14 @@
 }
 
 .coming-soon__back:hover {
-  background: var(--color-bg-subtle);
-  color: var(--color-text);
+  background: var(--paper);
+  color: var(--ink);
 }
 
 .coming-soon__title {
-  font-size: var(--font-size-600);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text);
+  font-size: var(--size-600);
+  font-weight: var(--fw-bold);
+  color: var(--ink);
   margin: 0;
 }
 
@@ -44,7 +44,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-800) var(--space-400);
+  padding: var(--size-800) var(--size-400);
 }
 
 @keyframes coming-fade-in {

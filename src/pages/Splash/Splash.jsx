@@ -21,9 +21,9 @@ export function Splash() {
           <svg viewBox="0 0 64 64" aria-hidden="true">
             <path
               d="M32 4 L60 24 V58 H40 V40 H24 V58 H4 V24 Z"
-              fill="var(--color-brand)"
+              fill="var(--brand)"
             />
-            <circle cx="32" cy="32" r="4" fill="var(--color-text-inverse)" />
+            <circle cx="32" cy="32" r="4" fill="var(--surface)" />
           </svg>
         </div>
         <h1 className="splash__title">Casa Inteligente</h1>

@@ -1,8 +1,7 @@
 .card {
-  background: var(--color-surface-raised);
-  border-radius: var(--radius-large);
-  padding: var(--space-500);
-  box-shadow: var(--shadow-overlay);
+  background: var(--surface);
+  border-radius: var(--size-450);
+  padding: var(--size-400);
   text-align: left;
   width: 100%;
 }

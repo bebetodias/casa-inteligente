@@ -2,15 +2,14 @@ import { useState } from 'react';
 import { Badge } from '../../components/primitives/Badge';
 import './ShoppingItem.css';
 
-export function ShoppingItem({ item, onBuy, onDetails, onEdit, onRemove }) {
+export function ShoppingItem({ item, onBuy, onDetails, onEdit, onRemove, leaving }) {
   const [expanded, setExpanded] = useState(false);
   const { produto, ultimaCompra, diasDesdeUltima, precoSugerido, observacao } = item;
 
   const alerta = diasDesdeUltima !== null && diasDesdeUltima > 7;
 
   return (
-    <li className={`item ${expanded ? 'item--expanded' : ''}`}>
-      <div className="item__main">
+    <li className={`item ${expanded ? 'item--expanded' : ''} shopping-item-wrapper ${leaving ? 'shopping-item-wrapper--leaving' : ''}`}>
         <button
           className="item__check"
           onClick={onBuy}
@@ -67,7 +66,7 @@ export function ShoppingItem({ item, onBuy, onDetails, onEdit, onRemove }) {
             </button>
           </div>
         </div>
-      </div>
+
     </li>
   );
 }

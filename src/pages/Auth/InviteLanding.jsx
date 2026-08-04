@@ -45,9 +45,9 @@ export function InviteLanding() {
             <svg viewBox="0 0 64 64" aria-hidden="true">
               <path
                 d="M32 4 L60 24 V58 H40 V40 H24 V58 H4 V24 Z"
-                fill="var(--color-text-inverse)"
+                fill="var(--surface)"
               />
-              <circle cx="32" cy="32" r="4" fill="var(--color-brand)" />
+              <circle cx="32" cy="32" r="4" fill="var(--brand)" />
             </svg>
           </div>
           <h2 className="auth__brand-title">Você foi convidado!</h2>

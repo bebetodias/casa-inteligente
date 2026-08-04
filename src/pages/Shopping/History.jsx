@@ -5,7 +5,7 @@ import { Select } from '../../components/primitives/Select';
 import { Badge } from '../../components/primitives/Badge';
 import { EmptyState } from '../../components/primitives/EmptyState';
 import { CATEGORIAS } from '../../services/mock/catalog';
-import { CartIcon, SearchIcon, PriceIcon, LocationIcon } from './ShoppingIcons';
+import { CartIcon, SearchIcon, PriceIcon, LocationIcon } from '../../utils/Icons';
 import './History.css';
 
 const PERIODOS = [
