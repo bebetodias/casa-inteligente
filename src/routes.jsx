@@ -8,6 +8,7 @@ import { InviteLanding } from './pages/Auth/InviteLanding';
 import { InviteShare } from './pages/Auth/InviteShare';
 import { Modules } from './pages/Modules/Modules';
 import { Shopping } from './pages/Shopping/Shopping';
+import { SuperCook } from './pages/Recipes/SuperCook';
 import { Plants } from './pages/Plants/Plants';
 import { ComingSoon } from './pages/ComingSoon/ComingSoon';
 import { Profile } from './pages/Profile/Profile';
@@ -27,7 +28,7 @@ export const router = createHashRouter([
       { path: 'modulos', element: <Modules /> },
       { path: 'compras', element: <Shopping /> },
       { path: 'convite/compartilhar', element: <InviteShare /> },
-      { path: 'receitas', element: <ComingSoon title="SuperCook" icon="🍳" /> },
+      { path: 'receitas', element: <SuperCook /> },
       { path: 'plantas', element: <Plants /> },
       { path: 'manutencao', element: <ComingSoon title="Manutenção da Casa" icon="🛠️" /> },
       { path: 'tarefas', element: <ComingSoon title="Tarefas" icon="📋" /> },
