@@ -66,7 +66,7 @@
 /* === Métricas === */
 .shopping__metrics {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--size-400);
   padding: var(--size-400) var(--size-500);
   background: var(--surface);
@@ -122,7 +122,7 @@
 .shopping__list-header h2 {
   font-family: var(--ff-title);
   font-weight: var(--fw-medium);
-  font-size: var(--size-500);
+  font-size: var(--size-450);
   margin: 0;
 }
 

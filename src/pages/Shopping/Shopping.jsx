@@ -208,10 +208,6 @@ export function Shopping() {
             </span>
           </div>
           <div className="shopping__metric">
-            <span className="shopping__metric-label">Itens</span>
-            <span className="shopping__metric-value">{itensPendentes.length}</span>
-          </div>
-          <div className="shopping__metric">
             <span className="shopping__metric-label">No mês</span>
             <span className="shopping__metric-value">{stats.comprasNoMes} compras</span>
           </div>

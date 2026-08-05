@@ -3,8 +3,11 @@
   flex-direction: column;
   gap: var(--size-400);
   max-width: var(--layout-max-width);
+  width: 100%;
   margin: 0 auto;
   padding-bottom: var(--size-900);
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 /* Header */
@@ -14,100 +17,88 @@
   align-items: flex-start;
   gap: var(--size-400);
   flex-wrap: wrap;
+  padding: var(--size-600);
+  background-color: var(--ink);
+  color: var(--paper);
+  border-radius: 0 0 var(--radius-xlarge) var(--radius-xlarge);
 }
 
-.supercook__header-text {
+.supercook__title-area {
   display: flex;
   flex-direction: column;
   gap: var(--size-100);
+  flex: 1;
+  min-width: 0;
 }
 
-.supercook__badge-row {
-  display: flex;
-  align-items: center;
-  gap: var(--size-200);
-}
-
-.supercook__badge {
-  background: var(--color-recipes-light);
-  color: var(--color-recipes-bold);
-  font-weight: 700;
-  font-size: 0.8rem;
-  padding: 4px 10px;
-  border-radius: var(--radius-circle);
-}
-
-.supercook__pantry-count {
-  font-size: 0.85rem;
-  color: var(--color-text-subtle);
+.supercook__eyebrow {
+  font-family: var(--ff-mono);
+  color: var(--brand);
+  font-size: var(--size-300);
+  text-transform: uppercase;
 }
 
 .supercook__title {
   font-family: var(--ff-title);
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: var(--ink);
-  margin: 0;
+  font-size: var(--size-800);
+  font-style: italic;
+  font-weight: var(--fw-bold);
+  letter-spacing: -0.3px;
+  margin-block: var(--size-200);
+
 }
 
 .supercook__subtitle {
-  font-size: 0.95rem;
-  color: var(--color-text-subtle);
-  margin: 0;
+  color: var(--surface);
+  font-size: var(--size-350);
+  opacity: 0.6;
+}
+
+.supercook__actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: var(--size-200);
+  width: 100%;
+}
+
+.supercook__add-btn {
+  white-space: nowrap;
 }
 
 /* Despensa Limpa / Minimalista */
 .supercook__pantry-clean {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-200);
+  margin: var(--size-400);
   background: #ffffff;
   border: 1px solid var(--line);
   border-radius: var(--radius-xlarge);
   padding: var(--size-400);
   box-shadow: var(--shadow-elevation-100);
-  display: flex;
-  flex-direction: column;
-  gap: var(--size-300);
 }
 
-.supercook__pantry-top {
+.supercook__pantry-header {
   display: flex;
+  align-items: baseline;
   justify-content: space-between;
-  align-items: center;
+  margin-bottom: 12px;
 }
 
-.supercook__pantry-label {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--ink);
+.supercook__pantry-header h2 {
+  font-family: var(--ff-title);
+  font-weight: var(--fw-medium);
+  font-size: var(--size-450);
+  margin: 0;
 }
 
-.supercook__pantry-quick-actions {
-  display: flex;
-  align-items: center;
-  gap: var(--size-200);
-}
-
-.supercook__link-btn {
-  background: none;
-  border: none;
-  color: var(--color-recipes-medium);
-  font-weight: 600;
-  font-size: 0.85rem;
-  cursor: pointer;
-  padding: var(--size-100) var(--size-200);
-  border-radius: var(--radius-medium);
-  transition: background var(--duration-fast);
-}
-
-.supercook__link-btn:hover {
-  background: var(--color-recipes-light);
-}
-
-.supercook__link-btn--danger {
-  color: var(--color-danger);
-}
-
-.supercook__link-btn--danger:hover {
-  background: var(--color-danger-subtle);
+.supercook__pantry-header span {
+  font-family: var(--ff-mono);
+  font-size: var(--size-250);
+  color: var(--muted-2);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 /* Autocomplete Field */
@@ -121,46 +112,33 @@
   align-items: center;
   position: relative;
   gap: var(--size-200);
+  width: 100%;
 }
 
 .supercook__search-icon-pantry {
   position: absolute;
-  left: var(--size-300);
-  font-size: 1rem;
+  left: var(--size-250);
+  font-size: 0.9rem;
   color: var(--color-text-subtle);
+  pointer-events: none;
 }
 
 .supercook__autocomplete-input {
+  flex: 1;
+  min-width: 0;
   width: 100%;
-  padding: var(--size-300) var(--size-300) var(--size-300) var(--size-800);
-  border: 2px solid var(--line);
+  padding: var(--size-250) var(--size-250) var(--size-250) var(--size-700);
+  border: 1px solid var(--line);
   border-radius: var(--radius-large);
-  font-size: 0.95rem;
-  background: var(--paper);
+  font-size: var(--size-300);
+  background: var(--surface);
   transition: border-color var(--duration-fast), background var(--duration-fast);
+  box-sizing: border-box;
 }
 
 .supercook__autocomplete-input:focus {
   outline: none;
-  border-color: var(--color-recipes-medium);
-  background: #ffffff;
-}
-
-.supercook__autocomplete-add-btn {
-  background: var(--color-recipes-bold);
-  color: #ffffff;
-  border: none;
-  padding: var(--size-300) var(--size-400);
-  border-radius: var(--radius-large);
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: opacity var(--duration-fast);
-}
-
-.supercook__autocomplete-add-btn:hover {
-  opacity: 0.9;
+  border-color: var(--brand);
 }
 
 /* Suggestions Dropdown */
@@ -177,13 +155,15 @@
   margin: 0;
   padding: var(--size-100) 0;
   z-index: 50;
-  max-height: 220px;
+  max-height: 200px;
   overflow-y: auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .supercook__suggestion-item {
-  padding: var(--size-200) var(--size-400);
-  font-size: 0.9rem;
+  padding: var(--size-200) var(--size-300);
+  font-size: 0.88rem;
   color: var(--ink);
   cursor: pointer;
   display: flex;
@@ -208,11 +188,13 @@
   flex-wrap: wrap;
   gap: var(--size-150);
   align-items: center;
-  min-height: 38px;
+  min-height: 36px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .supercook__empty-pantry-text {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: var(--color-text-subtle);
   margin: 0;
   font-style: italic;
@@ -222,18 +204,24 @@
   display: inline-flex;
   align-items: center;
   gap: var(--size-150);
-  background: #E5EBDF;
-  border: 1px solid #5c946e;
-  color: #2E4227;
-  padding: var(--size-150) var(--size-300);
-  border-radius: var(--radius-circle);
-  font-size: 0.85rem;
-  font-weight: 600;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  padding: 4px 10px;
+  border-radius: var(--size-200);
+  font-size: var(--size-300);
+  font-weight: var(--fw-semibold);
+  max-width: 100%;
+  box-sizing: border-box;
   animation: fadeIn 0.2s ease-in-out;
 }
 
 .supercook__ingredient-tag-name {
   line-height: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 160px;
 }
 
 .supercook__ingredient-tag-remove {
@@ -246,7 +234,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0.7;
+  opacity: 0.75;
   transition: opacity var(--duration-fast);
 }
 
@@ -255,71 +243,17 @@
   color: var(--color-danger);
 }
 
-/* Tabs */
-.supercook__tabs-container {
-  border-bottom: 2px solid var(--line);
-}
-
-.supercook__tabs {
-  display: flex;
-  gap: var(--size-100);
-  overflow-x: auto;
-}
-
-.supercook-tab {
-  background: none;
-  border: none;
-  padding: var(--size-300) var(--size-400);
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--color-text-subtle);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: var(--size-200);
-  border-bottom: 3px solid transparent;
-  margin-bottom: -2px;
-  white-space: nowrap;
-}
-
-.supercook-tab:hover {
-  color: var(--ink);
-}
-
-.supercook-tab--active {
-  color: var(--color-recipes-bold);
-  border-bottom-color: var(--color-recipes-bold);
-}
-
-.supercook-tab__badge {
-  background: var(--paper);
-  padding: 2px 8px;
-  border-radius: var(--radius-circle);
-  font-size: 0.75rem;
-  color: var(--ink);
-}
-
-.supercook-tab__badge--success {
-  background: #E5EBDF;
-  color: #2E4227;
-}
-
-.supercook-tab__badge--warning {
-  background: #FFF0B3;
-  color: #6E4C12;
-}
-
-/* Filter Bar */
+/* Filter Bar & Web Search */
 .supercook__filter-bar {
   display: flex;
-  justify-content: space-between;
-  gap: var(--size-300);
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: var(--size-200);
+  width: 100%;
+  margin-top: var(--size-200);
 }
 
 .supercook__search-box {
-  flex: 1;
-  min-width: 240px;
+  width: 100%;
   position: relative;
   display: flex;
   align-items: center;
@@ -327,28 +261,31 @@
 
 .supercook__search-icon {
   position: absolute;
-  left: var(--size-300);
-  font-size: 0.9rem;
+  left: var(--size-250);
+  font-size: 0.85rem;
   color: var(--color-text-subtle);
+  pointer-events: none;
 }
 
 .supercook__search-input {
   width: 100%;
-  padding: var(--size-250) var(--size-300) var(--size-250) var(--size-800);
+  box-sizing: border-box;
+  min-width: 0;
+  padding: var(--size-200) var(--size-300) var(--size-200) var(--size-700);
   border: 1px solid var(--line);
   border-radius: var(--radius-large);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   background: #fff;
 }
 
 .supercook__search-input:focus {
   outline: none;
-  border-color: var(--color-recipes-medium);
+  border-color: var(--brand);
 }
 
 .supercook__clear-search {
   position: absolute;
-  right: var(--size-300);
+  right: var(--size-250);
   background: none;
   border: none;
   cursor: pointer;
@@ -358,20 +295,21 @@
 .supercook__filter-actions {
   display: flex;
   gap: var(--size-200);
-  align-items: center;
-  flex-wrap: wrap;
+  width: 100%;
 }
 
 .supercook__web-btn {
+  width: 100%;
+  box-sizing: border-box;
   background: #eef3fc;
   border: 1px solid #0065ff;
   color: #0065ff;
   font-weight: 600;
   font-size: 0.85rem;
-  padding: var(--size-250) var(--size-300);
+  padding: var(--size-200) var(--size-300);
   border-radius: var(--radius-large);
   cursor: pointer;
-  white-space: nowrap;
+  text-align: center;
   transition: all var(--duration-fast);
 }
 
@@ -389,14 +327,17 @@
 .supercook__web-notice {
   background: #eef3fc;
   border: 1px solid #b3d4ff;
-  padding: var(--size-250) var(--size-350);
+  padding: var(--size-200) var(--size-300);
   border-radius: var(--radius-large);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: #0052cc;
+  margin: 0 var(--size-400);
 }
 
 .supercook__select {
-  padding: var(--size-250) var(--size-300);
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--size-200) var(--size-250);
   border: 1px solid var(--line);
   border-radius: var(--radius-large);
   font-size: 0.85rem;
@@ -405,210 +346,404 @@
   cursor: pointer;
 }
 
-/* Recipe Cards Grid */
-.supercook__recipes-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: var(--size-400);
+@media (min-width: 640px) {
+  .supercook__filter-bar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .supercook__search-box {
+    flex: 1;
+    min-width: 200px;
+  }
+  .supercook__filter-actions {
+    flex-direction: row;
+    width: auto;
+  }
+  .supercook__web-btn,
+  .supercook__select {
+    width: auto;
+  }
 }
 
-.recipe-card {
-  background: #ffffff;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-xlarge);
-  padding: var(--size-400);
+/* ==========================================================================
+   ESTRUTURA DE BLOS (LAYOUT DA IMAGEM DE REFERÊNCIA)
+   ========================================================================== */
+
+.supercook__block {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: var(--size-300);
-  box-shadow: var(--shadow-elevation-100);
-  transition: transform var(--duration-fast) var(--easing-standard), box-shadow var(--duration-fast);
+  gap: var(--size-250);
+  margin: 0 var(--size-400);
+  width: auto;
 }
 
-.recipe-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-elevation-200);
-  border-color: var(--color-recipes-pure);
-}
-
-.recipe-card__header {
+.supercook__block-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: baseline;
+  padding: 0 var(--size-100);
 }
 
-.recipe-card__thumb {
-  width: 58px;
-  height: 58px;
-  border-radius: var(--radius-large);
-  object-fit: cover;
+.supercook__block-title {
+  font-family: var(--ff-title);
+  font-size: var(--size-450);
+  font-weight: var(--fw-medium);
+  margin: 0;
 }
 
-.recipe-card__icon {
-  font-size: 2.4rem;
-  width: 54px;
-  height: 54px;
-  background: var(--color-recipes-light);
-  border-radius: var(--radius-large);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.recipe-card__fav {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-circle);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-}
-
-.recipe-card__category {
-  font-size: 0.75rem;
-  font-weight: 700;
+.supercook__block-subtitle {
+  font-family: var(--ff-mono);
+  font-size: var(--size-250);
+  color: var(--muted-2);
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--color-recipes-bold);
-  letter-spacing: 0.5px;
+}
+
+/* --------------------------------------------------------------------------
+   BLOCO 1: HERO CARD ("Pronto para cozinhar")
+   -------------------------------------------------------------------------- */
+.hero-card {
+  background: #142A1E;
+  background: linear-gradient(145deg, #142A1E 0%, #1B3828 100%);
+  border-radius: 20px;
+  padding: var(--size-400);
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-300);
+  box-shadow: 0 10px 25px -5px rgba(20, 42, 30, 0.3);
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--easing-standard);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.hero-card:hover {
+  transform: translateY(-2px);
+}
+
+.hero-card__badge-top {
+  display: flex;
+}
+
+.hero-card__badge {
+  background: #2E4227;
+  color: #A7F3D0;
+  font-family: var(--ff-mono, monospace);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: var(--radius-circle);
+  display: inline-block;
+}
+
+.hero-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-200);
+}
+
+.hero-card__title {
+  font-family: var(--ff-title, 'Fraunces', serif);
+  font-size: clamp(1.4rem, 4vw, 1.7rem);
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.hero-card__meta {
+  font-family: var(--ff-mono, monospace);
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.hero-card__ingredients {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--size-150);
   margin-top: var(--size-100);
 }
 
-.recipe-card__title {
-  font-family: var(--ff-title);
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: var(--ink);
-  margin: var(--size-050) 0;
-  line-height: 1.3;
+.hero-card__ing-chip {
+  background: rgba(255, 255, 255, 0.1);
+  color: #E2E8F0;
+  font-size: 0.78rem;
+  padding: 4px 10px;
+  border-radius: var(--radius-circle);
 }
 
-.recipe-card__desc {
-  font-size: 0.85rem;
-  color: var(--color-text-subtle);
-  margin: 0 0 var(--size-200) 0;
-  line-height: 1.4;
+.hero-card__cta-btn {
+  width: 100%;
+  background: #FF5A3C;
+  color: #ffffff;
+  border: none;
+  height: 46px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  margin-top: var(--size-200);
+  cursor: pointer;
+  transition: background var(--duration-fast);
+  text-align: center;
+}
 
-  /* Clamp 2 lines */
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+.hero-card__cta-btn:hover {
+  background: #E0482B;
+}
+
+/* --------------------------------------------------------------------------
+   BLOCO 2: "Vai faltar pouco" (Grid em 2 Colunas)
+   -------------------------------------------------------------------------- */
+.supercook__grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--size-300);
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .supercook__grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.small-recipe-card {
+  background: #ffffff;
+  border: 1px solid #E2E8F0;
+  border-radius: 16px;
+  padding: var(--size-300);
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-200);
+  cursor: pointer;
+  transition: transform var(--duration-fast), box-shadow var(--duration-fast);
+}
+
+.small-recipe-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-elevation-100);
+  border-color: var(--color-recipes-pure);
+}
+
+.small-recipe-card__thumb-bg {
+  width: 100%;
+  height: 90px;
+  background: #F5EBE0;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
   overflow: hidden;
 }
 
-.recipe-card__meta {
-  display: flex;
-  gap: var(--size-300);
-  font-size: 0.8rem;
-  color: var(--color-text-subtle);
-  font-weight: 500;
-  padding: var(--size-150) 0;
-  border-top: 1px dashed var(--line);
-  border-bottom: 1px dashed var(--line);
-  margin-bottom: var(--size-200);
+.small-recipe-card__thumb-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.recipe-card__match {
+.small-recipe-card__body {
   display: flex;
   flex-direction: column;
   gap: var(--size-100);
 }
 
-.recipe-card__match-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.8rem;
-}
-
-.recipe-card__match-pill {
+.small-recipe-card__title {
+  font-family: var(--ff-title, 'Fraunces', serif);
+  font-size: 0.98rem;
   font-weight: 700;
-  padding: 2px 8px;
-  border-radius: var(--radius-circle);
+  color: #1E293B;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.small-recipe-card__meta {
+  font-family: var(--ff-mono, monospace);
   font-size: 0.75rem;
+  color: #64748B;
 }
 
-.recipe-card__match-pill--full {
-  background: #E5EBDF;
-  color: #2E4227;
-}
-
-.recipe-card__match-pill--partial {
-  background: #FFF0B3;
-  color: #6E4C12;
-}
-
-.recipe-card__match-pill--low {
-  background: var(--paper);
-  color: var(--color-text-subtle);
-}
-
-.recipe-card__match-text {
-  color: var(--color-text-subtle);
-  font-size: 0.75rem;
-}
-
-.recipe-card__progress-bar {
-  height: 6px;
-  background: var(--paper);
-  border-radius: var(--radius-circle);
-  overflow: hidden;
-}
-
-.recipe-card__progress-fill {
-  height: 100%;
-  background: var(--color-recipes-medium);
-}
-
-.recipe-card__missing-box {
-  display: flex;
-  align-items: center;
-  gap: var(--size-150);
-  margin-top: var(--size-200);
-  font-size: 0.75rem;
-}
-
-.recipe-card__missing-label {
+.small-recipe-card__status {
+  margin-top: var(--size-050);
+  font-size: 0.78rem;
   font-weight: 600;
-  color: var(--color-warning);
 }
 
-.recipe-card__missing-list {
+.status-text--success {
+  color: #15803D;
+}
+
+.status-text--warning {
+  color: #C2410C;
+}
+
+/* --------------------------------------------------------------------------
+   BLOCO 3: "Todas as sugestões" (Lista com Gráfico de Rosca / Donut Chart)
+   -------------------------------------------------------------------------- */
+.supercook__list-vertical {
   display: flex;
-  gap: var(--size-100);
-  flex-wrap: wrap;
-}
-
-.recipe-card__missing-tag {
-  background: #FFF0B3;
-  color: #6E4C12;
-  padding: 2px 6px;
-  border-radius: var(--radius-small);
-  font-size: 0.7rem;
-  font-weight: 500;
-}
-
-.recipe-card__btn-view {
+  flex-direction: column;
+  gap: var(--size-300);
   width: 100%;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  padding: var(--size-200);
-  border-radius: var(--radius-medium);
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--color-recipes-bold);
-  cursor: pointer;
-  transition: all var(--duration-fast);
-  text-align: center;
 }
 
-.recipe-card__btn-view:hover {
-  background: var(--color-recipes-bold);
-  color: #ffffff;
-  border-color: var(--color-recipes-bold);
+.list-recipe-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--size-400);
+  padding: var(--size-400);
+  cursor: pointer;
+  transition: transform var(--duration-fast), border-color var(--duration-fast);
+}
+
+.list-recipe-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-recipes-pure);
+  box-shadow: var(--shadow-elevation-100);
+}
+
+.list-recipe-card__top {
+  padding-bottom: var(--size-300);
+}
+
+.list-recipe-card__head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--size-300);
+}
+
+.list-recipe-card__donut {
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+.list-recipe-card__info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.list-recipe-card__title {
+  font-family: var(--ff-title);
+  font-size: var(--size-350);
+  font-weight: var(--fw-semibold);
+  margin-bottom: var(--size-050);
+}
+
+.list-recipe-card__meta {
+  font-family: var(--ff-mono);
+  font-size: var(--size-250);
+  color: #64748B;
+}
+
+.list-recipe-card__ingredients {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--size-100);
+  margin-top: var(--size-100);
+}
+
+.ing-pill {
+  font-size: var(--size-250);
+  font-weight: var(--fw-semibold);
+  padding: var(--size-100) var(--size-200);
+  border-radius: var(--size-150);  
+}
+
+/* Pílula Verde Solida (Disponível) */
+.ing-pill--available {
+  background: var(--recipes-have-light);
+  color: var(--ink);
+}
+
+/* Pílula Vermelha com Borda Pontilhada (Faltante - Conforme Imagem!) */
+.ing-pill--missing {
+  background: #FEF2F2;
+  color: #B91C1C;
+  border: 1px dashed #F87171;
+}
+
+.list-recipe-card__footer {
+  border-top: 1px solid var(--line);
+  padding-top: var(--size-200);
+  margin-top: var(--size-100);
+  font-size: var(--size-300);
+}
+
+.list-recipe-card__status-msg--success {
+  color: #15803D;
+  font-weight: 600;
+}
+
+.list-recipe-card__action-link {
+  background: none;
+  border: none;
+  color: #B91C1C;
+  font-weight: 600;
+  font-size: 0.82rem;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+}
+
+.action-underline {
+  text-decoration: underline;
+}
+
+/* --------------------------------------------------------------------------
+   BLOCO 4: MÉTRICAS NO RODAPÉ
+   -------------------------------------------------------------------------- */
+.supercook__metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--size-300);
+  margin: 0 var(--size-400);
+  width: auto;
+}
+
+.metric-card {
+  background: #ffffff;
+  border: 1px solid #E2E8F0;
+  border-radius: 16px;
+  padding: var(--size-350);
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-100);
+  position: relative;
+}
+
+.metric-card__dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+.metric-card__dot--peach {
+  background: #FFEDD5;
+  border: 2px solid #F97316;
+}
+
+.metric-card__dot--blue {
+  background: #E0F2FE;
+  border: 2px solid #0284C7;
+}
+
+.metric-card__number {
+  font-family: var(--ff-title, 'Fraunces', serif);
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1E293B;
+  line-height: 1;
+}
+
+.metric-card__label {
+  font-size: 0.82rem;
+  color: #64748B;
+  font-weight: 500;
 }
 
 @keyframes fadeIn {

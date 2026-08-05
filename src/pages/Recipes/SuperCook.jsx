@@ -1,15 +1,25 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
+import { useAuthStore } from '../../stores/authStore';
 import { useRecipes } from '../../hooks/useRecipes';
 import { buscarSugestoesIngredientes } from '../../services/mock/recipesMock';
+import { DonutChart } from '../../components/primitives/DonutChart';
 import { EmptyState } from '../../components/primitives/EmptyState';
 import { Button } from '../../components/primitives/Button';
 import { RecipeDetailModal } from './RecipeDetailModal';
 import { AddRecipeModal } from './AddRecipeModal';
+import { useShoppingList } from '../../hooks/useShoppingList';
+import { useToastStore } from '../../hooks/useToast';
 import './SuperCook.css';
+import { PlusIcon, TrashIcon, SearchIcon } from '../../utils/Icons';
 
 export function SuperCook() {
+  const { casa } = useAuthStore();
+  const { adicionar: adicionarAoCarrinho } = useShoppingList(casa?.id);
+  const { showToast } = useToastStore();
+
   const {
     despensa,
+    favoritos,
     receitas,
     loadingOnline,
     buscaOnlineAtiva,
@@ -23,13 +33,12 @@ export function SuperCook() {
     limparBuscaWeb,
   } = useRecipes();
 
-  // Estados de abas e filtros
-  const [activeTab, setActiveTab] = useState('prontas'); // 'prontas' | 'quase' | 'todas' | 'favoritas'
+  // Estados de filtros
   const [busca, setBusca] = useState('');
   const [filtroCategoria, setFiltroCategoria] = useState('todas');
   const [filtroDieta, setFiltroDieta] = useState('todas');
 
-  // Estados do Autocomplete da Despensa
+  // Autocomplete da Despensa
   const [inputIngrediente, setInputIngrediente] = useState('');
   const [sugestoes, setSugestoes] = useState([]);
   const [mostrarSugestoes, setMostrarSugestoes] = useState(false);
@@ -50,7 +59,6 @@ export function SuperCook() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Atualizar sugestões conforme o usuário digita
   const handleInputChange = (e) => {
     const val = e.target.value;
     setInputIngrediente(val);
@@ -64,7 +72,6 @@ export function SuperCook() {
     }
   };
 
-  // Selecionar sugestão ou adicionar item digitado
   const handleSelecionarIngrediente = (nome) => {
     adicionarIngrediente(nome);
     setInputIngrediente('');
@@ -79,35 +86,31 @@ export function SuperCook() {
     }
   };
 
-  // Contadores de match
-  const contadores = useMemo(() => {
-    let prontas = 0;
-    let quase = 0;
-    let favoritas = 0;
+  // Adicionar ingredientes faltantes diretamente à Lista de Compras do App
+  const handleAdicionarFaltantesALista = async (e, receta) => {
+    e.stopPropagation();
+    if (!receta.match?.faltantes?.length) return;
+    try {
+      let cont = 0;
+      for (const ing of receta.match.faltantes) {
+        await adicionarAoCarrinho({
+          nome: ing.nome,
+          categoria: ing.categoria || 'outros',
+          quantidade: 1,
+          unidade: 'un',
+        });
+        cont++;
+      }
+      showToast(`${cont} ingrediente(s) adicionados à Lista de Compras!`, 'success');
+    } catch (err) {
+      showToast('Erro ao adicionar à lista de compras.', 'error');
+    }
+  };
 
-    receitas.forEach((r) => {
-      if (r.match.prontoAgora) prontas++;
-      if (r.match.quasePronto) quase++;
-      if (r.isFavorito) favoritas++;
-    });
-
-    return {
-      prontas,
-      quase,
-      todas: receitas.length,
-      favoritas,
-    };
-  }, [receitas]);
-
-  // Filtrar receitas exibidas
-  const receitasExibidas = useMemo(() => {
+  // Filtrar receitas baseadas nas buscas e seleções
+  const receitasFiltradas = useMemo(() => {
+    if (despensa.length === 0) return [];
     return receitas.filter((receita) => {
-      // Filtro por Aba
-      if (activeTab === 'prontas' && !receita.match.prontoAgora) return false;
-      if (activeTab === 'quase' && !receita.match.quasePronto) return false;
-      if (activeTab === 'favoritas' && !receita.isFavorito) return false;
-
-      // Filtro por Busca de nome ou ingrediente
       if (busca.trim()) {
         const termo = busca.toLowerCase();
         const matchTitulo = receita.titulo.toLowerCase().includes(termo);
@@ -117,12 +120,10 @@ export function SuperCook() {
         if (!matchTitulo && !matchIngrediente) return false;
       }
 
-      // Filtro por Categoria da Receita
       if (filtroCategoria !== 'todas' && receita.categoria !== filtroCategoria) {
         return false;
       }
 
-      // Filtro por Dieta
       if (filtroDieta !== 'todas') {
         if (filtroDieta === 'rapida' && receita.tempoPreparo > 20) return false;
         if (filtroDieta !== 'rapida' && (!receita.dietas || !receita.dietas.includes(filtroDieta))) {
@@ -132,63 +133,74 @@ export function SuperCook() {
 
       return true;
     }).sort((a, b) => b.match.percentual - a.match.percentual);
-  }, [receitas, activeTab, busca, filtroCategoria, filtroDieta]);
+  }, [receitas, despensa, busca, filtroCategoria, filtroDieta]);
+
+  // Regra 1: O Bloco 1 ("Pronto para cozinhar") só deve aparecer se a receita tiver 100% dos ingredientes
+  const receitaHero = useMemo(() => {
+    if (despensa.length === 0) return null;
+    return receitasFiltradas.find((r) => r.match.prontoAgora) || null;
+  }, [receitasFiltradas, despensa]);
+
+  // Regra 2: "Vai faltar pouco" só se tiver pelo menos 1 ingrediente
+  const receitasVaiFaltarPouco = useMemo(() => {
+    if (despensa.length === 0) return [];
+    return receitasFiltradas.filter(
+      (r) => r.match.quasePronto && r.id !== receitaHero?.id
+    ).slice(0, 4);
+  }, [receitasFiltradas, receitaHero, despensa]);
 
   return (
     <div className="supercook-page">
       {/* Cabeçalho */}
       <header className="supercook__header">
-        <div className="supercook__header-text">
-          <div className="supercook__badge-row">
-            <span className="supercook__badge">🍳 SuperCook</span>
-            <span className="supercook__pantry-count">
-              {despensa.length} ingrediente(s) na despensa
-            </span>
-          </div>
-          <h1 className="supercook__title">O que temos para hoje?</h1>
+        <div className="supercook__title-area">
+          <p className="supercook__eyebrow">{casa?.nome || 'Minha Casa'}</p>
+          <h1 className="supercook__title">SuperCook</h1>
           <p className="supercook__subtitle">
-            Informe os ingredientes da sua casa e receba sugestões completas de receitas!
+            {despensa.length} ingrediente(s) na despensa
           </p>
         </div>
 
-        <Button
-          variant="primary"
-          onClick={() => setIsAddModalOpen(true)}
-          className="supercook__add-btn"
-        >
-          + Nova Receita
-        </Button>
+        <div className="supercook__actions">
+          <Button
+            variant="primary"
+            size="medium"
+            onClick={() => setIsAddModalOpen(true)}
+          >
+            + Nova Receita
+          </Button>
+          <Button
+            variant="link"
+            size="medium"
+            iconBefore={<PlusIcon size={16} />}
+            onClick={selecionarBasicos}
+          >
+            Básicos
+          </Button>
+          {despensa.length > 0 && (
+            <Button
+              variant="link"
+              size="medium"
+              iconBefore={<TrashIcon size={16} />}
+              onClick={limparDespensa}
+            >
+              Limpar
+            </Button>
+          )}
+        </div>
       </header>
 
       {/* Painel da Despensa Limpo e Minimalista */}
       <section className="supercook__pantry-clean">
-        <div className="supercook__pantry-top">
-          <label className="supercook__pantry-label">
-            🧺 O que você tem em casa?
-          </label>
-          <div className="supercook__pantry-quick-actions">
-            <button
-              className="supercook__link-btn"
-              onClick={selecionarBasicos}
-              title="Marcar ovos, temperos, leite e arroz básico"
-            >
-              ✨ Carregar Básicos
-            </button>
-            {despensa.length > 0 && (
-              <button
-                className="supercook__link-btn supercook__link-btn--danger"
-                onClick={limparDespensa}
-              >
-                🗑️ Limpar tudo
-              </button>
-            )}
-          </div>
+        <div className="supercook__pantry-header">
+          <h2>Sua despensa</h2>
+          <span>{despensa.length} ITENS</span>
         </div>
 
         {/* Campo de Busca com Autocomplete */}
         <div className="supercook__autocomplete-container" ref={autocompleteRef}>
           <form onSubmit={handleFormSubmit} className="supercook__autocomplete-form">
-            <span className="supercook__search-icon-pantry">🔍</span>
+            <span className="supercook__search-icon-pantry"><SearchIcon size={16} /></span>
             <input
               type="text"
               className="supercook__autocomplete-input"
@@ -197,12 +209,16 @@ export function SuperCook() {
               onChange={handleInputChange}
               onFocus={() => inputIngrediente.trim() && setMostrarSugestoes(true)}
             />
-            <button type="submit" className="supercook__autocomplete-add-btn">
-              + Adicionar
-            </button>
+            <Button
+              type="submit"
+              variant="primary"
+              size="medium"
+              iconBefore={<PlusIcon size={16} />}
+            >
+              Adicionar
+            </Button>
           </form>
 
-          {/* Menu Suspenso de Sugestões */}
           {mostrarSugestoes && sugestoes.length > 0 && (
             <ul className="supercook__suggestions-dropdown">
               {sugestoes.map((item, idx) => (
@@ -219,11 +235,11 @@ export function SuperCook() {
           )}
         </div>
 
-        {/* Tags de Ingredientes Selecionados na Despensa */}
+        {/* Tags de Ingredientes Selecionados */}
         <div className="supercook__tags-wrapper">
           {despensa.length === 0 ? (
             <p className="supercook__empty-pantry-text">
-              Nenhum ingrediente adicionado. Digite acima para começar a buscar receitas!
+              Nenhum ingrediente adicionado. Digite acima para ver as sugestões!
             </p>
           ) : (
             despensa.map((ingrediente) => (
@@ -240,111 +256,70 @@ export function SuperCook() {
             ))
           )}
         </div>
-      </section>
 
-      {/* Abas de Nível de Match */}
-      <section className="supercook__tabs-container">
-        <div className="supercook__tabs">
-          <button
-            className={`supercook-tab ${activeTab === 'prontas' ? 'supercook-tab--active' : ''}`}
-            onClick={() => setActiveTab('prontas')}
-          >
-            🎯 Dá pra fazer agora
-            <span className="supercook-tab__badge supercook-tab__badge--success">
-              {contadores.prontas}
-            </span>
-          </button>
+        {/* Barra de Filtros e Pesquisa Web */}
+        <div className="supercook__filter-bar">
+          <div className="supercook__search-box">
+            <span className="supercook__search-icon"><SearchIcon size={16} /></span>
+            <input
+              type="text"
+              className="supercook__search-input"
+              placeholder="Filtrar receitas por nome..."
+              value={busca}
+              onChange={(e) => setBusca(e.target.value)}
+            />
+            {busca && (
+              <button className="supercook__clear-search" onClick={() => setBusca('')}>
+                ✕
+              </button>
+            )}
+          </div>
 
-          <button
-            className={`supercook-tab ${activeTab === 'quase' ? 'supercook-tab--active' : ''}`}
-            onClick={() => setActiveTab('quase')}
-          >
-            🛒 Falta pouco (1-2 itens)
-            <span className="supercook-tab__badge supercook-tab__badge--warning">
-              {contadores.quase}
-            </span>
-          </button>
-
-          <button
-            className={`supercook-tab ${activeTab === 'todas' ? 'supercook-tab--active' : ''}`}
-            onClick={() => setActiveTab('todas')}
-          >
-            📖 Todas as Receitas
-            <span className="supercook-tab__badge">{contadores.todas}</span>
-          </button>
-
-          <button
-            className={`supercook-tab ${activeTab === 'favoritas' ? 'supercook-tab--active' : ''}`}
-            onClick={() => setActiveTab('favoritas')}
-          >
-            ⭐ Favoritas
-            <span className="supercook-tab__badge">{contadores.favoritas}</span>
-          </button>
-        </div>
-      </section>
-
-      {/* Barra de Filtros e Busca Externa */}
-      <div className="supercook__filter-bar">
-        <div className="supercook__search-box">
-          <span className="supercook__search-icon">🔍</span>
-          <input
-            type="text"
-            className="supercook__search-input"
-            placeholder="Filtrar receitas por nome..."
-            value={busca}
-            onChange={(e) => setBusca(e.target.value)}
-          />
-          {busca && (
-            <button className="supercook__clear-search" onClick={() => setBusca('')}>
-              ✕
+          <div className="supercook__filter-actions">
+            <button
+              className={`supercook__web-btn ${buscaOnlineAtiva ? 'supercook__web-btn--active' : ''}`}
+              onClick={() => {
+                if (buscaOnlineAtiva) {
+                  limparBuscaWeb();
+                } else {
+                  buscarNaWeb(busca || 'chicken');
+                }
+              }}
+              disabled={loadingOnline}
+            >
+              {loadingOnline
+                ? 'Buscando na Web...'
+                : buscaOnlineAtiva
+                ? '✕ Busca Web'
+                : 'Buscar na Web'}
             </button>
-          )}
+
+            <select
+              className="supercook__select"
+              value={filtroCategoria}
+              onChange={(e) => setFiltroCategoria(e.target.value)}
+            >
+              <option value="todas">Refeições</option>
+              <option value="Café da Manhã">Café da Manhã</option>
+              <option value="Almoço/Jantar">Almoço / Jantar</option>
+              <option value="Lanche">Lanche</option>
+              <option value="Sobremesa">Sobremesa</option>
+            </select>
+
+            <select
+              className="supercook__select"
+              value={filtroDieta}
+              onChange={(e) => setFiltroDieta(e.target.value)}
+            >
+              <option value="todas">Dietas</option>
+              <option value="vegetariano">Vegetariano</option>
+              <option value="sem-gluten">Sem Glúten</option>
+              <option value="low-carb">Low Carb</option>
+              <option value="rapida">Rápidas</option>
+            </select>
+          </div>
         </div>
-
-        <div className="supercook__filter-actions">
-          <button
-            className={`supercook__web-btn ${buscaOnlineAtiva ? 'supercook__web-btn--active' : ''}`}
-            onClick={() => {
-              if (buscaOnlineAtiva) {
-                limparBuscaWeb();
-              } else {
-                buscarNaWeb(busca || 'chicken');
-              }
-            }}
-            disabled={loadingOnline}
-          >
-            {loadingOnline
-              ? '⏳ Buscando na Web...'
-              : buscaOnlineAtiva
-              ? '✕ Fechar Busca Web'
-              : '🌐 Buscar Receitas na Web (API)'}
-          </button>
-
-          <select
-            className="supercook__select"
-            value={filtroCategoria}
-            onChange={(e) => setFiltroCategoria(e.target.value)}
-          >
-            <option value="todas">Todas as Refeições</option>
-            <option value="Café da Manhã">Café da Manhã</option>
-            <option value="Almoço/Jantar">Almoço / Jantar</option>
-            <option value="Lanche">Lanche</option>
-            <option value="Sobremesa">Sobremesa</option>
-          </select>
-
-          <select
-            className="supercook__select"
-            value={filtroDieta}
-            onChange={(e) => setFiltroDieta(e.target.value)}
-          >
-            <option value="todas">Todas as Dietas</option>
-            <option value="vegetariano">🥗 Vegetariano</option>
-            <option value="sem-gluten">🌾 Sem Glúten</option>
-            <option value="low-carb">🥑 Low Carb</option>
-            <option value="rapida">⚡ Rápidas (≤20min)</option>
-          </select>
-        </div>
-      </div>
+      </section>
 
       {buscaOnlineAtiva && (
         <div className="supercook__web-notice">
@@ -352,133 +327,215 @@ export function SuperCook() {
         </div>
       )}
 
-      {/* Grid de Cards de Receita */}
-      {receitasExibidas.length === 0 ? (
+      {/* REGRA 3: Se a despensa está vazia ou nenhuma receita foi encontrada, mostra o EmptyState */}
+      {despensa.length === 0 ? (
+        <EmptyState
+          icon="🧺"
+          title="Sua despensa está vazia"
+          description="Adicione os ingredientes que você tem em casa no campo acima para receber sugestões de receitas personalizadas!"
+          action={
+            <Button variant="primary" onClick={selecionarBasicos}>
+              ✨ Carregar Ingredientes Básicos
+            </Button>
+          }
+        />
+      ) : receitasFiltradas.length === 0 ? (
         <EmptyState
           icon="🍳"
           title="Nenhuma receita encontrada"
-          description={
-            activeTab === 'prontas'
-              ? 'Adicione mais ingredientes no campo acima ou clique em "Buscar Receitas na Web (API)" para explorar mais pratos!'
-              : 'Tente ajustar sua busca ou pesquisar receitas adicionais na web.'
-          }
+          description="Nenhuma receita corresponde aos ingredientes ou filtros informados."
           action={
-            <div style={{ display: 'flex', gap: '10px' }}>
-              {activeTab === 'prontas' && (
-                <Button variant="secondary" onClick={() => setActiveTab('todas')}>
-                  Ver todas as receitas
-                </Button>
-              )}
-              <Button variant="primary" onClick={() => buscarNaWeb(busca || 'chicken')}>
-                🌐 Buscar Receitas na Web
-              </Button>
-            </div>
+            <Button variant="primary" onClick={() => buscarNaWeb(busca || 'chicken')}>
+              🌐 Buscar Receitas na Web (API)
+            </Button>
           }
         />
       ) : (
-        <div className="supercook__recipes-grid">
-          {receitasExibidas.map((receita) => {
-            const { match, isFavorito } = receita;
-
-            return (
-              <article key={receita.id} className="recipe-card">
-                <div className="recipe-card__header">
-                  {receita.imagemUrl ? (
-                    <img
-                      src={receita.imagemUrl}
-                      alt={receita.titulo}
-                      className="recipe-card__thumb"
-                    />
-                  ) : (
-                    <div className="recipe-card__icon">{receita.imagemEmoji || '🍲'}</div>
-                  )}
-
-                  <button
-                    className={`recipe-card__fav ${isFavorito ? 'recipe-card__fav--active' : ''}`}
-                    onClick={() => toggleFavorito(receita.id)}
-                    title={isFavorito ? 'Remover dos favoritos' : 'Favoritar'}
-                  >
-                    {isFavorito ? '❤️' : '🤍'}
-                  </button>
+        <>
+          {/* REGRA 1: BLOCO 1 ("Pronto para cozinhar") só aparece se tivermos 100% dos ingredientes de uma receita */}
+          {receitaHero && receitaHero.match.prontoAgora && (
+            <section className="supercook__block">
+              <article
+                className="hero-card"
+                onClick={() => setReceitaSelecionada(receitaHero)}
+              >
+                <div className="hero-card__badge-top">
+                  <span className="hero-card__badge">Pronto para cozinhar</span>
                 </div>
 
-                <div className="recipe-card__body">
-                  <div className="recipe-card__category">
-                    {receita.categoria} {receita.isOnline && '• 🌐 Web'}
-                  </div>
-                  <h3 className="recipe-card__title">{receita.titulo}</h3>
-                  <p className="recipe-card__desc">{receita.descricao}</p>
-
-                  <div className="recipe-card__meta">
-                    <span>⏱️ {receita.tempoPreparo} min</span>
-                    <span>👥 {receita.porcoes} pss</span>
-                    <span>📊 {receita.dificuldade}</span>
+                <div className="hero-card__content">
+                  <h2 className="hero-card__title">{receitaHero.titulo}</h2>
+                  <div className="hero-card__meta">
+                    <span>{receitaHero.tempoPreparo} min</span> &bull;{' '}
+                    <span>{receitaHero.porcoes} porções</span> &bull;{' '}
+                    <span>{receitaHero.dificuldade}</span>
                   </div>
 
-                  <div className="recipe-card__match">
-                    <div className="recipe-card__match-header">
-                      <span
-                        className={`recipe-card__match-pill recipe-card__match-pill--${
-                          match.prontoAgora ? 'full' : match.quasePronto ? 'partial' : 'low'
-                        }`}
-                      >
-                        {match.prontoAgora
-                          ? '🎯 100% Pronta'
-                          : match.quasePronto
-                          ? `🛒 Falta ${match.faltantes.length}`
-                          : `${match.percentual}%`}
+                  <div className="hero-card__ingredients">
+                    {receitaHero.ingredientes.map((ing, idx) => (
+                      <span key={idx} className="hero-card__ing-chip">
+                        {ing.nome}
                       </span>
-                      <span className="recipe-card__match-text">
-                        {match.matchCount}/{match.total} ingrediente(s)
-                      </span>
+                    ))}
+                  </div>
+
+                  <button
+                    className="hero-card__cta-btn"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setReceitaSelecionada(receitaHero);
+                    }}
+                  >
+                    Ver receita completa
+                  </button>
+                </div>
+              </article>
+            </section>
+          )}
+
+          {/* REGRA 2: BLOCO 2 ("Vai faltar pouco") só aparece se tiver pelo menos 1 ingrediente na despensa */}
+          {receitasVaiFaltarPouco.length > 0 && (
+            <section className="supercook__block">
+              <div className="supercook__block-header">
+                <h2 className="supercook__block-title">Vai faltar pouco</h2>
+                <span className="supercook__block-subtitle">1 ITEM OU MENOS</span>
+              </div>
+
+              <div className="supercook__grid-2">
+                {receitasVaiFaltarPouco.map((receta) => (
+                  <article
+                    key={receta.id}
+                    className="small-recipe-card"
+                    onClick={() => setReceitaSelecionada(receta)}
+                  >
+                    <div className="small-recipe-card__thumb-bg">
+                      {receta.imagemUrl ? (
+                        <img src={receta.imagemUrl} alt={receta.titulo} />
+                      ) : (
+                        <span>{receta.imagemEmoji || '🍳'}</span>
+                      )}
                     </div>
 
-                    <div className="recipe-card__progress-bar">
-                      <div
-                        className="recipe-card__progress-fill"
-                        style={{ width: `${match.percentual}%` }}
-                      />
-                    </div>
-                  </div>
+                    <div className="small-recipe-card__body">
+                      <h3 className="small-recipe-card__title">{receta.titulo}</h3>
+                      <div className="small-recipe-card__meta">
+                        <span>{receta.tempoPreparo} min</span> &bull;{' '}
+                        <span>{receta.dificuldade}</span>
+                      </div>
 
-                  {match.faltantes.length > 0 && (
-                    <div className="recipe-card__missing-box">
-                      <span className="recipe-card__missing-label">Falta:</span>
-                      <div className="recipe-card__missing-list">
-                        {match.faltantes.slice(0, 3).map((ing, idx) => (
-                          <span key={idx} className="recipe-card__missing-tag">
-                            {ing.nome}
-                          </span>
-                        ))}
-                        {match.faltantes.length > 3 && (
-                          <span className="recipe-card__missing-tag">
-                            +{match.faltantes.length - 3} mais
+                      <div className="small-recipe-card__status">
+                        {receta.match.prontoAgora ? (
+                          <span className="status-text status-text--success">Você tem tudo</span>
+                        ) : (
+                          <span className="status-text status-text--warning">
+                            Falta {receta.match.faltantes.length} item
                           </span>
                         )}
                       </div>
                     </div>
-                  )}
-                </div>
+                  </article>
+                ))}
+              </div>
+            </section>
+          )}
 
-                <div className="recipe-card__footer">
-                  <button
-                    className="recipe-card__btn-view"
-                    onClick={() => setReceitaSelecionada(receita)}
+          {/* REGRA 2: BLOCO 3 ("Todas as sugestões") só aparece se tiver pelo menos 1 ingrediente na despensa */}
+          <section className="supercook__block">
+            <div className="supercook__block-header">
+              <h2 className="supercook__block-title">Todas as sugestões</h2>
+              <span className="supercook__block-subtitle">
+                {receitasFiltradas.length} RECEITAS
+              </span>
+            </div>
+
+            <div className="supercook__list-vertical">
+              {receitasFiltradas.map((receta) => {
+                const { match } = receta;
+                return (
+                  <article
+                    key={receta.id}
+                    className="list-recipe-card"
+                    onClick={() => setReceitaSelecionada(receta)}
                   >
-                    Ver Receita Completa →
-                  </button>
-                </div>
-              </article>
-            );
-          })}
-        </div>
+                    <div className="list-recipe-card__top">
+                      <div className="list-recipe-card__head">
+                        {/* Gráfico de Rosca */}
+                        <div className="list-recipe-card__donut">
+                          <DonutChart percentual={match.percentual} size={48} strokeWidth={4} />
+                        </div>
+
+                        <div className="list-recipe-card__info">
+                          <h3 className="list-recipe-card__title">{receta.titulo}</h3>
+                          <div className="list-recipe-card__meta">
+                            <span>{receta.tempoPreparo} min</span> &bull;{' '}
+                            <span>{receta.porcoes} porções</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="list-recipe-card__ingredients">
+                        {/* Pílulas de Ingredientes (Verde = presente, Vermelho Pontilhado = faltante) */}
+                        <div className="list-recipe-card__ingredients">
+                          {receta.ingredientes.map((ing, idx) => {
+                            const temEmCasa = match.presentes.some((p) => p.nome === ing.nome);
+                            return (
+                              <span
+                                key={idx}
+                                className={`ing-pill ${
+                                  temEmCasa ? 'ing-pill--available' : 'ing-pill--missing'
+                                }`}
+                              >
+                                {ing.nome}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Linha Divisória de Rodapé do Card */}
+                    <div className="list-recipe-card__footer">
+                      {match.prontoAgora ? (
+                        <span className="list-recipe-card__status-msg list-recipe-card__status-msg--success">
+                          Você tem tudo
+                        </span>
+                      ) : (
+                        <button
+                          className="list-recipe-card__action-link"
+                          onClick={(e) => handleAdicionarFaltantesALista(e, receta)}
+                        >
+                          Falta {match.faltantes.length} {match.faltantes.length === 1 ? 'item' : 'itens'} &bull; <span className="action-underline">adicionar à lista</span>
+                        </button>
+                      )}
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+
+          {/* BLOCO 4: MÉTRICAS DE RODAPÉ */}
+          <section className="supercook__metrics-grid">
+            <div className="metric-card">
+              <span className="metric-card__dot metric-card__dot--peach" />
+              <div className="metric-card__number">{favoritos.length}</div>
+              <div className="metric-card__label">Receitas favoritas</div>
+            </div>
+
+            <div className="metric-card">
+              <span className="metric-card__dot metric-card__dot--blue" />
+              <div className="metric-card__number">{receitasFiltradas.length}</div>
+              <div className="metric-card__label">Sugestões hoje</div>
+            </div>
+          </section>
+        </>
       )}
 
       {/* Modais */}
       {receitaSelecionada && (
         <RecipeDetailModal
           receita={receitaSelecionada}
-          isFavorito={receitaSelecionada.isFavorito}
+          isFavorito={favoritos.includes(receitaSelecionada.id)}
           onToggleFavorito={toggleFavorito}
           onClose={() => setReceitaSelecionada(null)}
         />

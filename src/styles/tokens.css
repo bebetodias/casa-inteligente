@@ -38,6 +38,8 @@
   --color-recipes-pure: #f7476d;
   --color-recipes-medium: #cd284d;
   --color-recipes-bold: #B33A22;
+  --recipes-have-light: #E5EBDF;
+  --color-recipes-missing-subtle: #FEF2F2;
 
   /* Plants */
   --color-plants-light: #E5EBDF;
